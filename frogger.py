@@ -1,10 +1,10 @@
 import arcade
 
 # size of one grid square
-MOVEMENT_DISTANCE = 64
+MOVEMENT_DISTANCE = 48.5
 
 # screen dimensions to be multiples of MOVEMENT_DISTANCE
-SCREEN_WIDTH = 768
+SCREEN_WIDTH = 672
 SCREEN_HEIGHT = 768
 SCREEN_TITLE = "Frogger"
 
@@ -30,19 +30,20 @@ class FroggerGame(arcade.Window):
         """
         super().__init__(width, height, title)
 
-        # Variables that will hold sprite lists
+        # variables that will hold sprite lists
         self.player_list = None
+        self.background = None
 
-        # Set up the player info
+        # set up the player info
         self.player_sprite = None
-
-        # Set the background color
-        arcade.set_background_color(arcade.color.AMAZON)
 
     def setup(self):
         """ Set up the game and initialize the variables. """
         # sprite lists
         self.player_list = arcade.SpriteList()
+
+        # load frogger grid
+        self.background = arcade.load_texture("assets/froggerGrid.png")
 
         # set up player sprite size
         self.player_sprite = UserFrog("assets/froggerSprite.png", 1.0)
@@ -62,7 +63,11 @@ class FroggerGame(arcade.Window):
     def on_draw(self):
         """ Render the screen. """
         self.clear()
-        # Draw all the sprites
+
+        # draw the background
+        arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+
+        # draw all the sprites
         self.player_list.draw()
 
     def on_update(self, delta_time):
