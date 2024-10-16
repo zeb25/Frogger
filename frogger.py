@@ -1,12 +1,33 @@
+
+
+
 import arcade
 
-# size of one grid square
 MOVEMENT_DISTANCE = 48.5
-
-# screen dimensions to be multiples of MOVEMENT_DISTANCE
-SCREEN_WIDTH = 672
-SCREEN_HEIGHT = 768
+WIDTH = 672
+HEIGHT = 768
 SCREEN_TITLE = "Frogger"
+
+
+class MenuView(arcade.View):
+    """ Class that manages the 'menu' view. """
+
+    def on_show_view(self):
+        """ Called when switching to this view"""
+        arcade.set_background_color(arcade.color.AMAZON)
+
+    def on_draw(self):
+        """ Draw the menu """
+        self.clear()
+        arcade.draw_text("Press S to start", WIDTH / 2, HEIGHT / 2,
+                         arcade.color.BLACK, font_size=30, anchor_x="center")
+
+    def on_key_press(self, key, _modifiers):
+        """ Use a key press to advance to the 'game' view. """
+        if key == arcade.key.S:  # Detect "S" key press to start the game
+            frogger_game = FroggerGame()
+            frogger_game.setup()
+            self.window.show_view(frogger_game)
 
 
 class UserFrog(arcade.Sprite):
@@ -14,21 +35,21 @@ class UserFrog(arcade.Sprite):
         """ Ensure the player stays within bounds. """
         if self.left < 0:
             self.left = 0
-        elif self.right > SCREEN_WIDTH - 1:
-            self.right = SCREEN_WIDTH - 1
+        elif self.right > WIDTH - 1:
+            self.right = WIDTH - 1
 
         if self.bottom < 0:
             self.bottom = 0
-        elif self.top > SCREEN_HEIGHT - 1:
-            self.top = SCREEN_HEIGHT - 1
+        elif self.top > HEIGHT - 1:
+            self.top = HEIGHT - 1
 
 
-class FroggerGame(arcade.Window):
-    def __init__(self, width, height, title):
+class FroggerGame(arcade.View):
+    def __init__(self):
         """
-        Initializer
+        Initializer for the Frogger game view.
         """
-        super().__init__(width, height, title)
+        super().__init__()
 
         # variables that will hold sprite lists
         self.player_list = None
@@ -56,8 +77,8 @@ class FroggerGame(arcade.Window):
         self.player_sprite.scale = min(scale_x, scale_y)
 
         # set initial player sprite position
-        self.player_sprite.center_x = 0
-        self.player_sprite.center_y = 0
+        self.player_sprite.center_x = WIDTH // 2
+        self.player_sprite.center_y = MOVEMENT_DISTANCE
         self.player_list.append(self.player_sprite)
 
     def on_draw(self):
@@ -65,7 +86,7 @@ class FroggerGame(arcade.Window):
         self.clear()
 
         # draw the background
-        arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+        arcade.draw_lrwh_rectangle_textured(0, 0, WIDTH, HEIGHT, self.background)
 
         # draw all the sprites
         self.player_list.draw()
@@ -93,11 +114,11 @@ class FroggerGame(arcade.Window):
             # rotate png right
             self.player_sprite.angle = 270
 
-
 def main():
-    """ Main function """
-    window = FroggerGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    window.setup()
+    """ Startup """
+    window = arcade.Window(WIDTH, HEIGHT, SCREEN_TITLE)
+    menu_view = MenuView()
+    window.show_view(menu_view)
     arcade.run()
 
 
