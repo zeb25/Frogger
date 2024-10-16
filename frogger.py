@@ -37,6 +37,10 @@ class FroggerGame(arcade.Window):
         # set up the player info
         self.player_sprite = None
 
+        # default score and lives
+        self.score = 0
+        self.lives = 3
+
     def setup(self):
         """ Set up the game and initialize the variables. """
         # sprite lists
@@ -69,6 +73,10 @@ class FroggerGame(arcade.Window):
 
         # draw all the sprites
         self.player_list.draw()
+
+        # draw the score and lives at the top of the screen
+        arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
+        arcade.draw_text(f"Lives: {self.lives}", SCREEN_WIDTH - 100, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
 
     def on_update(self, delta_time):
         """ Movement and game logic """
