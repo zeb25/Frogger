@@ -37,6 +37,13 @@ class FroggerGame(arcade.Window):
         # set up the player info
         self.player_sprite = None
 
+        # default score and lives
+        self.score = 0
+        self.lives = 3
+
+        # track y position for score
+        self.max_y_position = 0
+
     def setup(self):
         """ Set up the game and initialize the variables. """
         # sprite lists
@@ -70,6 +77,10 @@ class FroggerGame(arcade.Window):
         # draw all the sprites
         self.player_list.draw()
 
+        # draw the score and lives at the top of the screen
+        arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
+        arcade.draw_text(f"Lives: {self.lives}", SCREEN_WIDTH - 100, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
+
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.player_list.update()
@@ -77,9 +88,16 @@ class FroggerGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
         if key == arcade.key.UP:
-            self.player_sprite.center_y += MOVEMENT_DISTANCE
+            new_y = self.player_sprite.center_y + MOVEMENT_DISTANCE
+            self.player_sprite.center_y = new_y
             # rotate png up
             self.player_sprite.angle = 0
+
+            # check if the sprite moved up higher than ever before
+            if new_y > self.max_y_position:
+                self.score += 10
+                self.max_y_position = new_y
+
         elif key == arcade.key.DOWN:
             self.player_sprite.center_y -= MOVEMENT_DISTANCE
             # rotate png down
