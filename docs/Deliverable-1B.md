@@ -18,3 +18,5 @@
 
 ### Wade:
 - Gameplay logic pseudo-code
+ - **Status**: In-Progress. The sprite frog can move around the screen with the sprite png rotated based on direction. There is also a score displayed that increments as the frog moves up the screen and a lives counter displayed without functionality.
+  - **Branch**: I pushed changes to branches "basic-frog-movement" and "scoring-text".
