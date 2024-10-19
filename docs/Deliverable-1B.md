@@ -2,6 +2,7 @@
 
 ### Everyone:
 - Familiarize ourselves with Python Arcade enough so that we are all comfortable with using it individually
+- **Status**: Completed. We were all able to make some contributions and are familiar with using the UserFrog and FroggerGame classes. 
 
 ### Zoe:
 - Fix bounding for frog movement on the screen  
