@@ -54,7 +54,7 @@ class FroggerGame(arcade.Window):
         self.log_list = None
 
         # set up the player info
-        self.player_sprite = None#TODO
+        self.player_sprite = None
 
         # default score and lives
         self.score = 0
