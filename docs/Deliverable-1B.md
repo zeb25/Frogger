@@ -15,6 +15,7 @@
 
 ### David:
 - Get moving objects across the screen
+ - **Status**: Completed.  Objects move across screen and reset.  Currently there are three logs moving at different speeds.  Each of these will soon be turned into a pattern and adjusted to the correct sizes.
 
 ### Wade:
 - Gameplay logic pseudo-code
