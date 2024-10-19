@@ -4,23 +4,23 @@ import arcade
 MOVEMENT_DISTANCE = 48.5
 
 # screen dimensions to be multiples of MOVEMENT_DISTANCE
-SCREEN_WIDTH = 672
-SCREEN_HEIGHT = 768
+SCREEN_WIDTH = 679
+SCREEN_HEIGHT = 776
 SCREEN_TITLE = "Frogger"
 
 
 class UserFrog(arcade.Sprite):
     def update(self):
         """ Ensure the player stays within bounds. """
-        if self.left < 0:
-            self.left = 0
-        elif self.right > SCREEN_WIDTH - 1:
-            self.right = SCREEN_WIDTH - 1
+        if self.left < 5:
+            self.left = 5
+        elif self.right > SCREEN_WIDTH - 5:
+            self.right = SCREEN_WIDTH - 5
 
         if self.bottom < 0:
             self.bottom = 0
-        elif self.top > SCREEN_HEIGHT - 1:
-            self.top = SCREEN_HEIGHT - 1
+        elif self.top > SCREEN_HEIGHT - 145.5:
+            self.top = SCREEN_HEIGHT - 145.5
 
 
 class FroggerGame(arcade.Window):
@@ -43,6 +43,11 @@ class FroggerGame(arcade.Window):
 
         # track y position for score
         self.max_y_position = 0
+
+        # # setting default x, y positions and velocity
+        # self.x = 0
+        # self.y = SCREEN_HEIGHT - 20
+        # self.velocity = 300
 
     def setup(self):
         """ Set up the game and initialize the variables. """
@@ -81,9 +86,15 @@ class FroggerGame(arcade.Window):
         arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
         arcade.draw_text(f"Lives: {self.lives}", SCREEN_WIDTH - 100, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
 
+        # draw an obstacle
+        # arcade.draw_rectangle_filled(self.x, self.y, 100, 50, arcade.color.GREEN)
+
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.player_list.update()
+
+        # # move the obstacle
+        # self.x += self.velocity * delta_time
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
