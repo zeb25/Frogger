@@ -10,6 +10,27 @@ SCREEN_HEIGHT = 776
 SCREEN_TITLE = "Frogger"
 
 
+class MenuView(arcade.View):
+    """ Class that manages the 'menu' view. """
+
+    def on_show_view(self):
+        """ Called when switching to this view"""
+        arcade.set_background_color(arcade.color.AMAZON)
+
+    def on_draw(self):
+        """ Draw the menu """
+        self.clear()
+        arcade.draw_text("Press S to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.BLACK, font_size=30, anchor_x="center")
+
+    def on_key_press(self, key, _modifiers):
+        """ Use a key press to advance to the 'game' view. """
+        if key == arcade.key.S:  # Detect "S" key press to start the game
+            frogger_game = FroggerGame()
+            frogger_game.setup()
+            self.window.show_view(frogger_game)
+
+
 class UserFrog(arcade.Sprite):
     def update(self):
         """ Ensure the player stays within bounds. """
@@ -44,10 +65,10 @@ class Logs3(arcade.Sprite): #middle logs
             self.center_x = 0
 
 
-class FroggerGame(arcade.Window):
-    def __init__(self, width, height, title):
+class FroggerGame(arcade.View):
+    def __init__(self):
         """ Initializer """
-        super().__init__(width, height, title)
+        super().__init__()
 
         # variables that will hold sprite lists
         self.player_list = None
@@ -174,8 +195,10 @@ class FroggerGame(arcade.Window):
 
 def main():
     """ Main function """
-    window = FroggerGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    window.setup()
+    """ Startup """
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    menu_view = MenuView()
+    window.show_view(menu_view)
     arcade.run()
 
 
