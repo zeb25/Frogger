@@ -48,21 +48,21 @@ class UserFrog(arcade.Sprite):
 
 class Logs(arcade.Sprite): #lowest  logs
     def update(self):
-        self.center_x += 2
-        if self.center_x >= 600:
-            self.center_x = 0
+        self.left += 2
+        if self.left >= 679:
+            self.right = 0
 
 class Logs2(arcade.Sprite): #middle logs
     def update(self):
-        self.center_x += 3
-        if self.center_x >= 600:
-            self.center_x = 0
+        self.left += 3
+        if self.left >= 679:
+            self.right = 0
 
 class Logs3(arcade.Sprite): #middle logs
     def update(self):
-        self.center_x += 2.5
-        if self.center_x >= 600:
-            self.center_x = 0
+        self.left += 2.5
+        if self.left >= 679:
+            self.right = 0
 
 
 class FroggerGame(arcade.View):
@@ -118,23 +118,29 @@ class FroggerGame(arcade.View):
 
 
         #create log sprites--------------------------------------------
-        log_source = "Log (1).png"
+        #log_source = "Log (1).png"
+        log_source = "SmallLogFinal.png"
+        log_source2 = "BigLogFinal.png"
+        log_source3 = "MediumLogFinal.png"
         #lane 1
-        self.log_sprite = Logs(log_source, 6) #creates log of the first variety
-        self.log_sprite.center_x = 0 #xposition
-        self.log_sprite.center_y = LANE_SIZE * 9 + 13#450 #yposition
+        self.log_sprite = Logs(log_source, 1) #creates log of the first variety
+        self.log_sprite.right = 0 #xposition
+        self.log_sprite.bottom = LANE_SIZE * 9 
+        #self.log_sprite.center_y = LANE_SIZE * 9 + 20#450 #yposition
         self.log_list.append(self.log_sprite) #add to list of sprites
 
         #lane2
-        self.log_sprite = Logs2(log_source, 6)
-        self.log_sprite.center_x = 0
-        self.log_sprite.center_y = LANE_SIZE * 10 + 13
+        self.log_sprite = Logs2(log_source2, 1)
+        self.log_sprite.right = 0
+        self.log_sprite.bottom = LANE_SIZE * 10 
+        #self.log_sprite.center_y = LANE_SIZE * 10 + 20
         self.log_list.append(self.log_sprite)
 
         #lane3
-        self.log_sprite = Logs3(log_source, 6)
-        self.log_sprite.center_x = 0
-        self.log_sprite.center_y = LANE_SIZE * 12 + 13
+        self.log_sprite = Logs3(log_source3, 1)
+        self.log_sprite.right = 0
+        self.log_sprite.bottom = LANE_SIZE * 12 
+        #self.log_sprite.center_y = LANE_SIZE * 12 + 20
         self.log_list.append(self.log_sprite)
         #end of log sprites----------------------------------------------
 
