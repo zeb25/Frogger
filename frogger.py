@@ -24,19 +24,18 @@ class UserFrog(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 145.5
 
 
-class Logs(arcade.Sprite): #lowest logs
+
+class Logs(arcade.Sprite): #lowest  logs
     def update(self):
         self.center_x += 2
         if self.center_x >= 600:
             self.center_x = 0
-
 
 class Logs2(arcade.Sprite): #middle logs
     def update(self):
         self.center_x += 3
         if self.center_x >= 600:
             self.center_x = 0
-
 
 class Logs3(arcade.Sprite): #middle logs
     def update(self):
@@ -144,6 +143,7 @@ class FroggerGame(arcade.Window):
         # self.x += self.velocity * delta_time
 
         self.log_list.update()
+
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
