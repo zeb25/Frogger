@@ -47,9 +47,7 @@ class Logs3(arcade.Sprite): #middle logs
 
 class FroggerGame(arcade.Window):
     def __init__(self, width, height, title):
-        """
-        Initializer
-        """
+        """ Initializer """
         super().__init__(width, height, title)
 
         # variables that will hold sprite lists
