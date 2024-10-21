@@ -1,59 +1,61 @@
-
-
-
 import arcade
 
+# size of one grid square
 MOVEMENT_DISTANCE = 48.5
-WIDTH = 672
-HEIGHT = 768
+LANE_SIZE = 48.5
+
+# screen dimensions to be multiples of MOVEMENT_DISTANCE
+SCREEN_WIDTH = 679
+SCREEN_HEIGHT = 776
 SCREEN_TITLE = "Frogger"
-
-
-class MenuView(arcade.View):
-    """ Class that manages the 'menu' view. """
-
-    def on_show_view(self):
-        """ Called when switching to this view"""
-        arcade.set_background_color(arcade.color.AMAZON)
-
-    def on_draw(self):
-        """ Draw the menu """
-        self.clear()
-        arcade.draw_text("Press S to start", WIDTH / 2, HEIGHT / 2,
-                         arcade.color.BLACK, font_size=30, anchor_x="center")
-
-    def on_key_press(self, key, _modifiers):
-        """ Use a key press to advance to the 'game' view. """
-        if key == arcade.key.S:  # Detect "S" key press to start the game
-            frogger_game = FroggerGame()
-            frogger_game.setup()
-            self.window.show_view(frogger_game)
 
 
 class UserFrog(arcade.Sprite):
     def update(self):
         """ Ensure the player stays within bounds. """
-        if self.left < 0:
-            self.left = 0
-        elif self.right > WIDTH - 1:
-            self.right = WIDTH - 1
+        if self.left < 5:
+            self.left = 5
+        elif self.right > SCREEN_WIDTH - 5:
+            self.right = SCREEN_WIDTH - 5
 
         if self.bottom < 0:
             self.bottom = 0
-        elif self.top > HEIGHT - 1:
-            self.top = HEIGHT - 1
+        elif self.top > SCREEN_HEIGHT - 145.5:
+            self.top = SCREEN_HEIGHT - 145.5
 
 
-class FroggerGame(arcade.View):
-    def __init__(self):
+class Logs(arcade.Sprite): #lowest logs
+    def update(self):
+        self.center_x += 2
+        if self.center_x >= 600:
+            self.center_x = 0
+
+
+class Logs2(arcade.Sprite): #middle logs
+    def update(self):
+        self.center_x += 3
+        if self.center_x >= 600:
+            self.center_x = 0
+
+
+class Logs3(arcade.Sprite): #middle logs
+    def update(self):
+        self.center_x += 2.5
+        if self.center_x >= 600:
+            self.center_x = 0
+
+
+class FroggerGame(arcade.Window):
+    def __init__(self, width, height, title):
         """
-        Initializer for the Frogger game view.
+        Initializer
         """
-        super().__init__()
+        super().__init__(width, height, title)
 
         # variables that will hold sprite lists
         self.player_list = None
         self.background = None
+        self.log_list = None
 
         # set up the player info
         self.player_sprite = None
@@ -65,10 +67,18 @@ class FroggerGame(arcade.View):
         # track y position for score
         self.max_y_position = 0
 
+        # # setting default x, y positions and velocity
+        # self.x = 0
+        # self.y = SCREEN_HEIGHT - 20
+        # self.velocity = 300
+
     def setup(self):
         """ Set up the game and initialize the variables. """
+        
+
         # sprite lists
         self.player_list = arcade.SpriteList()
+        self.log_list = arcade.SpriteList()
 
         # load frogger grid
         self.background = arcade.load_texture("assets/froggerGrid.png")
@@ -84,27 +94,58 @@ class FroggerGame(arcade.View):
         self.player_sprite.scale = min(scale_x, scale_y)
 
         # set initial player sprite position
-        self.player_sprite.center_x = WIDTH // 2
-        self.player_sprite.center_y = MOVEMENT_DISTANCE
+        self.player_sprite.center_x = 0
+        self.player_sprite.center_y = 0
         self.player_list.append(self.player_sprite)
+
+
+        #create log sprites--------------------------------------------
+        log_source = "Log (1).png"
+        #lane 1
+        self.log_sprite = Logs(log_source, 6) #creates log of the first variety
+        self.log_sprite.center_x = 0 #xposition
+        self.log_sprite.center_y = LANE_SIZE * 9 + 13#450 #yposition
+        self.log_list.append(self.log_sprite) #add to list of sprites
+
+        #lane2
+        self.log_sprite = Logs2(log_source, 6)
+        self.log_sprite.center_x = 0
+        self.log_sprite.center_y = LANE_SIZE * 10 + 13
+        self.log_list.append(self.log_sprite)
+
+        #lane3
+        self.log_sprite = Logs3(log_source, 6)
+        self.log_sprite.center_x = 0
+        self.log_sprite.center_y = LANE_SIZE * 12 + 13
+        self.log_list.append(self.log_sprite)
+        #end of log sprites----------------------------------------------
 
     def on_draw(self):
         """ Render the screen. """
         self.clear()
 
         # draw the background
-        arcade.draw_lrwh_rectangle_textured(0, 0, WIDTH, HEIGHT, self.background)
+        arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
         # draw all the sprites
+        self.log_list.draw()
         self.player_list.draw()
 
         # draw the score and lives at the top of the screen
         arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
         arcade.draw_text(f"Lives: {self.lives}", SCREEN_WIDTH - 100, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
 
+        # draw an obstacle
+        # arcade.draw_rectangle_filled(self.x, self.y, 100, 50, arcade.color.GREEN)
+
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.player_list.update()
+
+        # # move the obstacle
+        # self.x += self.velocity * delta_time
+
+        self.log_list.update()
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
@@ -132,11 +173,11 @@ class FroggerGame(arcade.View):
             # rotate png right
             self.player_sprite.angle = 270
 
+
 def main():
-    """ Startup """
-    window = arcade.Window(WIDTH, HEIGHT, SCREEN_TITLE)
-    menu_view = MenuView()
-    window.show_view(menu_view)
+    """ Main function """
+    window = FroggerGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    window.setup()
     arcade.run()
 
 
