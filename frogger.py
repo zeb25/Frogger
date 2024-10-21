@@ -24,16 +24,19 @@ class UserFrog(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 145.5
 
 
+
 class Logs(arcade.Sprite): #lowest  logs
     def update(self):
         self.center_x += 2
         if self.center_x >= 600:
             self.center_x = 0
+
 class Logs2(arcade.Sprite): #middle logs
     def update(self):
         self.center_x += 3
         if self.center_x >= 600:
             self.center_x = 0
+
 class Logs3(arcade.Sprite): #middle logs
     def update(self):
         self.center_x += 2.5
@@ -43,9 +46,7 @@ class Logs3(arcade.Sprite): #middle logs
 
 class FroggerGame(arcade.Window):
     def __init__(self, width, height, title):
-        """
-        Initializer
-        """
+        """ Initializer """
         super().__init__(width, height, title)
 
         # variables that will hold sprite lists
