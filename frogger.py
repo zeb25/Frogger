@@ -74,7 +74,7 @@ class Logs2(arcade.Sprite): #middle logs
     def update(self):
         self.left += self.logSpeed
         if self.left >= 679:
-            self.right = 0
+            self.right = -3 * 146
 
 class Logs3(arcade.Sprite): #highest logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
@@ -151,7 +151,6 @@ class FroggerGame(arcade.View):
         self.log_sprite = Logs(log_source, logSpeed=2) #creates log of the first variety
         self.log_sprite.right = 0 #xposition
         self.log_sprite.bottom = LANE_SIZE * 9 
-        #self.log_sprite.center_y = LANE_SIZE * 9 + 20#450 #yposition
         self.log_list.append(self.log_sprite) #add to list of sprites
         self.log_sprite = Logs(log_source, logSpeed=2)
         self.log_sprite.right = -log_length*2
@@ -163,12 +162,20 @@ class FroggerGame(arcade.View):
         self.log_list.append(self.log_sprite)
         #end lane 1***********************************
 
-        #lane2
+        #lane2****************************************
         self.log_sprite = Logs2(log_source2, logSpeed=3)
         self.log_sprite.right = 0
         self.log_sprite.bottom = LANE_SIZE * 10 
-        #self.log_sprite.center_y = LANE_SIZE * 10 + 20
         self.log_list.append(self.log_sprite)
+        self.log_sprite = Logs2(log_source2, logSpeed=3)
+        self.log_sprite.right = -log_length * 3
+        self.log_sprite.bottom = LANE_SIZE * 10 
+        self.log_list.append(self.log_sprite)
+        self.log_sprite = Logs2(log_source2, logSpeed=3)
+        self.log_sprite.right = -log_length * 6
+        self.log_sprite.bottom = LANE_SIZE * 10 
+        self.log_list.append(self.log_sprite)
+        #end Lane 2***********************************
 
         #lane3
         self.log_sprite = Logs3(log_source3, logSpeed=2.5)
