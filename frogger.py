@@ -47,22 +47,46 @@ class UserFrog(arcade.Sprite):
 
 
 class Logs(arcade.Sprite): #lowest  logs
+    def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
+        super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
+        self.logSpeed = logSpeed
+        
+    #I don't think I need this
+    def setLogSpeed(self, logSpeed):
+        self.logSpeed = logSpeed
     def update(self):
-        self.center_x += 2
-        if self.center_x >= 600:
-            self.center_x = 0
+        self.left += self.logSpeed
+        #This resets the pattern
+        #three logs go across the screen and start going off
+        #when the second is half of the first reappears
+        #log length = 146
+        if self.left >= 679:
+            self.right = -1.5 * 146 #146 is log length
+    
 
 class Logs2(arcade.Sprite): #middle logs
+    def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
+        super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
+        self.logSpeed = logSpeed
+    #I don't think I need this
+    def setLogSpeed(self, logSpeed):
+        self.logSpeed = logSpeed
     def update(self):
-        self.center_x += 3
-        if self.center_x >= 600:
-            self.center_x = 0
+        self.left += self.logSpeed
+        if self.left >= 679:
+            self.right = -3 * 146
 
-class Logs3(arcade.Sprite): #middle logs
+class Logs3(arcade.Sprite): #highest logs
+    def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
+        super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
+        self.logSpeed = logSpeed
+    #I don't think I need this
+    def setLogSpeed(self, logSpeed):
+        self.logSpeed = logSpeed
     def update(self):
-        self.center_x += 2.5
-        if self.center_x >= 600:
-            self.center_x = 0
+        self.left += self.logSpeed
+        if self.left >= 679:
+            self.right = 0
 
 
 class FroggerGame(arcade.View):
@@ -118,23 +142,46 @@ class FroggerGame(arcade.View):
 
 
         #create log sprites--------------------------------------------
-        log_source = "Log (1).png"
-        #lane 1
-        self.log_sprite = Logs(log_source, 6) #creates log of the first variety
-        self.log_sprite.center_x = 0 #xposition
-        self.log_sprite.center_y = LANE_SIZE * 9 + 13#450 #yposition
+        #log_source = "Log (1).png"
+        log_source = "SmallLogFinal.png"
+        log_source2 = "BigLogFinal.png"
+        log_source3 = "MediumLogFinal.png"
+        log_length = 146
+        #lane 1*************************************
+        self.log_sprite = Logs(log_source, logSpeed=2) #creates log of the first variety
+        self.log_sprite.right = 0 #xposition
+        self.log_sprite.bottom = LANE_SIZE * 9 
         self.log_list.append(self.log_sprite) #add to list of sprites
-
-        #lane2
-        self.log_sprite = Logs2(log_source, 6)
-        self.log_sprite.center_x = 0
-        self.log_sprite.center_y = LANE_SIZE * 10 + 13
+        self.log_sprite = Logs(log_source, logSpeed=2)
+        self.log_sprite.right = -log_length*2
+        self.log_sprite.bottom = LANE_SIZE * 9
         self.log_list.append(self.log_sprite)
+        self.log_sprite = Logs(log_source, logSpeed=2)
+        self.log_sprite.right = -log_length*4
+        self.log_sprite.bottom = LANE_SIZE * 9
+        self.log_list.append(self.log_sprite)
+        #end lane 1***********************************
+
+        #lane2****************************************
+        self.log_sprite = Logs2(log_source2, logSpeed=3)
+        self.log_sprite.right = 0
+        self.log_sprite.bottom = LANE_SIZE * 10 
+        self.log_list.append(self.log_sprite)
+        self.log_sprite = Logs2(log_source2, logSpeed=3)
+        self.log_sprite.right = -log_length * 3
+        self.log_sprite.bottom = LANE_SIZE * 10 
+        self.log_list.append(self.log_sprite)
+        self.log_sprite = Logs2(log_source2, logSpeed=3)
+        self.log_sprite.right = -log_length * 6
+        self.log_sprite.bottom = LANE_SIZE * 10 
+        self.log_list.append(self.log_sprite)
+        #end Lane 2***********************************
 
         #lane3
-        self.log_sprite = Logs3(log_source, 6)
-        self.log_sprite.center_x = 0
-        self.log_sprite.center_y = LANE_SIZE * 12 + 13
+        self.log_sprite = Logs3(log_source3, logSpeed=2.5)
+        self.log_sprite.right = 0
+        self.log_sprite.bottom = LANE_SIZE * 12 
+        #self.log_sprite.center_y = LANE_SIZE * 12 + 20
         self.log_list.append(self.log_sprite)
         #end of log sprites----------------------------------------------
 
@@ -159,6 +206,11 @@ class FroggerGame(arcade.View):
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.player_list.update()
+
+        for log in self.log_list:
+            log_collision = arcade.check_for_collision(self.player_sprite, log)
+            if log_collision:
+                self.player_sprite.left += log.logSpeed
 
         # # move the obstacle
         # self.x += self.velocity * delta_time
