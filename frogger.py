@@ -45,6 +45,21 @@ class UserFrog(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 145.5
 
 
+class Car(arcade.Sprite):
+    def __init__(self, filename, car_speed=5, direction=1):
+        super().__init__(filename)
+        self.scale = LANE_SIZE / self.height
+        self.car_speed = car_speed
+        self.direction = direction
+
+    def update(self):
+        self.center_x += self.car_speed * self.direction
+        if self.left > SCREEN_WIDTH or self.right < 0:
+            if self.direction > 0:
+                self.right = 0
+            else:
+                self.left = SCREEN_WIDTH
+
 
 class Logs(arcade.Sprite): #lowest  logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
@@ -76,6 +91,7 @@ class Logs2(arcade.Sprite): #middle logs
         if self.left >= 679:
             self.right = -3 * 146
 
+
 class Logs3(arcade.Sprite): #highest logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
@@ -98,6 +114,7 @@ class FroggerGame(arcade.View):
         self.player_list = None
         self.background = None
         self.log_list = None
+        self.car_list = None
 
         # set up the player info
         self.player_sprite = None
@@ -121,6 +138,7 @@ class FroggerGame(arcade.View):
         # sprite lists
         self.player_list = arcade.SpriteList()
         self.log_list = arcade.SpriteList()
+        self.car_list = arcade.SpriteList()
 
         # load frogger grid
         self.background = arcade.load_texture("assets/froggerGrid.png")
@@ -139,6 +157,16 @@ class FroggerGame(arcade.View):
         self.player_sprite.center_x = 0
         self.player_sprite.center_y = 0
         self.player_list.append(self.player_sprite)
+
+        # create car sprites
+        car_sprites = ["assets/car1.png", "assets/car2.png", "assets/car3.png", "assets/car4.png", "assets/car5.png"]
+        lane_start = 2  # Starting from lane 2 (if spawn is lane 0)
+        for i, car_sprite in enumerate(car_sprites):
+            lane = lane_start + i
+            car = Car(car_sprite, car_speed = 2 + i * 0.5, direction = 1 if i % 2 == 0 else -1)
+            car.center_x = i * 100
+            car.bottom = LANE_SIZE * lane
+            self.car_list.append(car)
 
 
         #create log sprites--------------------------------------------
@@ -195,6 +223,7 @@ class FroggerGame(arcade.View):
         # draw all the sprites
         self.log_list.draw()
         self.player_list.draw()
+        self.car_list.draw()
 
         # draw the score and lives at the top of the screen
         arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
@@ -206,11 +235,18 @@ class FroggerGame(arcade.View):
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.player_list.update()
+        self.car_list.update()
 
+        # check for collision with logs
         for log in self.log_list:
             log_collision = arcade.check_for_collision(self.player_sprite, log)
             if log_collision:
                 self.player_sprite.left += log.logSpeed
+
+        for car in self.car_list:
+            if arcade.check_for_collision(self.player_sprite, car):
+                self.player_sprite.center_x, self.player_sprite.center_y = 0, 0  # Reset to start
+                self.lives -= 1
 
         # # move the obstacle
         # self.x += self.velocity * delta_time
