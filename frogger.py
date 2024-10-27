@@ -159,7 +159,8 @@ class FroggerGame(arcade.View):
         self.player_list.append(self.player_sprite)
 
         # create car sprites
-        car_sprites = ["assets/car1.png", "assets/car2.png", "assets/car3.png", "assets/car4.png", "assets/car5.png"]
+        car_sprites = ["assets/car1.png", "assets/car2flipped.png", "assets/car3.png",
+                       "assets/car4flipped.png", "assets/car5.png"]
         lane_start = 2  # Starting from lane 2 (if spawn is lane 0)
         for i, car_sprite in enumerate(car_sprites):
             lane = lane_start + i
