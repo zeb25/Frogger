@@ -86,7 +86,19 @@ class Logs3(arcade.Sprite): #highest logs
     def update(self):
         self.left += self.logSpeed
         if self.left >= 679:
-            self.right = 0
+            self.right = -194
+
+class LowerTurtles(arcade.Sprite): #lowest turtle
+    def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
+        super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
+        self.logSpeed = logSpeed
+    #I don't think I need this
+    def setLogSpeed(self, logSpeed):
+        self.logSpeed = logSpeed
+    def update(self):
+        self.left += self.logSpeed
+        if self.right <= 0:
+            self.right = 679
 
 
 class FroggerGame(arcade.View):
@@ -145,7 +157,8 @@ class FroggerGame(arcade.View):
         #log_source = "Log (1).png"
         log_source = "SmallLogFinal.png"
         log_source2 = "BigLogFinal.png"
-        log_source3 = "MediumLogFinal.png"
+        log_source3 = "MediumLogFinal2.png"
+        turtle_source1 = "Turtles.png"
         log_length = 146
         #lane 1*************************************
         self.log_sprite = Logs(log_source, logSpeed=2) #creates log of the first variety
@@ -181,9 +194,28 @@ class FroggerGame(arcade.View):
         self.log_sprite = Logs3(log_source3, logSpeed=2.5)
         self.log_sprite.right = 0
         self.log_sprite.bottom = LANE_SIZE * 12 
-        #self.log_sprite.center_y = LANE_SIZE * 12 + 20
         self.log_list.append(self.log_sprite)
-        #end of log sprites----------------------------------------------
+        self.log_sprite = Logs3(log_source3, logSpeed=2.5)
+        self.log_sprite.right = -194 - 48.5
+        self.log_sprite.bottom = LANE_SIZE * 12 
+        self.log_list.append(self.log_sprite)
+        self.log_sprite = Logs3(log_source3, logSpeed=2.5)
+        self.log_sprite.right = (-194 - 48.5) * 2
+        self.log_sprite.bottom = LANE_SIZE * 12 
+        self.log_list.append(self.log_sprite)
+        self.log_sprite = Logs3(log_source3, logSpeed=2.5)
+        self.log_sprite.right = (-194 - 48.5) * 3
+        self.log_sprite.bottom = LANE_SIZE * 12 
+        self.log_list.append(self.log_sprite)
+        #end of log sprites---------------------------------------------
+
+        #Start Turtle Sprites
+        #Lower Turtles
+        self.log_sprite = LowerTurtles(turtle_source1, logSpeed=-.5)
+        self.log_sprite.right = 0
+        self.log_sprite.bottom = LANE_SIZE * 8 
+        self.log_list.append(self.log_sprite)
+        #end of turtle sprites----------------------------------------------
 
     def on_draw(self):
         """ Render the screen. """
@@ -208,7 +240,7 @@ class FroggerGame(arcade.View):
         self.player_list.update()
 
         for log in self.log_list:
-            log_collision = arcade.check_for_collision(self.player_sprite, log)
+            log_collision = arcade.check_for_collision(self.player_sprite, log) #and log.left <= self.player_sprite.center_x <= log.right
             if log_collision:
                 self.player_sprite.left += log.logSpeed
 
