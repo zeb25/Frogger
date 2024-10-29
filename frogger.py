@@ -136,7 +136,9 @@ class FroggerGame(arcade.View):
         # create car sprites
         car_sprites = ["assets/car1.png", "assets/car2flipped.png", "assets/car3.png",
                        "assets/car4flipped.png", "assets/car5.png"]
-        lane_start = 2  # Starting from lane 2 (if spawn is lane 0)
+        # Starting from lane 2 (if spawn is lane 0)
+        lane_start = 2
+        # create each car and add it to car_list
         for i, car_sprite in enumerate(car_sprites):
             lane = lane_start + i
             car = Car(car_sprite, car_speed = 2 + i * 0.5, direction = 1 if i % 2 == 0 else -1)
@@ -228,7 +230,6 @@ class FroggerGame(arcade.View):
         # self.x += self.velocity * delta_time
 
         self.log_list.update()
-
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
