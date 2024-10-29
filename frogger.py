@@ -214,6 +214,7 @@ class FroggerGame(arcade.View):
         self.log_sprite = LowerTurtles(turtle_source1, logSpeed=-.5)
         self.log_sprite.right = 0
         self.log_sprite.bottom = LANE_SIZE * 8 
+        self.log_sprite.hit_box = [[-65, 0], [68, 0]]
         self.log_list.append(self.log_sprite)
         #end of turtle sprites----------------------------------------------
 
