@@ -39,6 +39,20 @@ class UserFrog(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 145.5
 
 
+class Logs1(arcade.Sprite):  # lowest logs row, similar to Logs2
+    def __init__(self, filename=None, scale=1, image_x=0, image_y=0, image_width=0, image_height=0, center_x=0, center_y=0,
+                 repeat_count_x=1, repeat_count_y=1, flipped_horizontally=False, flipped_vertically=False,
+                 flipped_diagonally=False, hit_box_algorithm="Simple", hit_box_detail=4.5, texture=None, angle=0, logSpeed=4):
+        super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x,
+                         repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm,
+                         hit_box_detail, texture, angle)
+        self.logSpeed = logSpeed
+
+    def update(self):
+        self.left += self.logSpeed
+        if self.left >= 679:
+            self.right = -3 * 146  # Reset similar to Logs2
+
 class Logs(arcade.Sprite): #lowest  logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
@@ -57,10 +71,11 @@ class Logs(arcade.Sprite): #lowest  logs
             self.right = -1.5 * 146 #146 is log length
     
 
-class Logs2(arcade.Sprite): #middle logs
+class Logs2(arcade.Sprite): # middle logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
+        
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
     def update(self):
@@ -69,8 +84,7 @@ class Logs2(arcade.Sprite): #middle logs
         if self.left >= SCREEN_WIDTH:
             self.right = -3 * 146
 
-
-class Logs3(arcade.Sprite): #highest logs
+class Logs3(arcade.Sprite): # highest logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
@@ -194,11 +208,6 @@ class FroggerGame(arcade.View):
         # track y position for score
         self.max_y_position = 0
 
-        # # setting default x, y positions and velocity
-        # self.x = 0
-        # self.y = SCREEN_HEIGHT - 20
-        # self.velocity = 300
-
     def setup(self):
         """ Set up the game and initialize the variables. """
         # sprite lists
@@ -282,6 +291,7 @@ class FroggerGame(arcade.View):
         self.log_sprite.right = 0
         self.log_sprite.bottom = LANE_SIZE * 12 
         self.log_list.append(self.log_sprite)
+
         self.log_sprite = Logs3(log_source3, logSpeed=2.5)
         self.log_sprite.right = -194 - 48.5
         self.log_sprite.bottom = LANE_SIZE * 12 
@@ -346,32 +356,40 @@ class FroggerGame(arcade.View):
         arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
         arcade.draw_text(f"Lives: {self.lives}", SCREEN_WIDTH - 100, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
 
-        # draw an obstacle
-        # arcade.draw_rectangle_filled(self.x, self.y, 100, 50, arcade.color.GREEN)
-
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.player_list.update()
         self.car_list.update()
 
+        # check for collision with cars
+        for car in self.car_list:
+            if arcade.check_for_collision(self.player_sprite, car):
+                self.player_sprite.center_x, self.player_sprite.center_y = 0, 0  # Reset to start if collision
+                self.lives -= 1
+
         # check for collision with logs
+        frog_on_log = False
         for log in self.log_list:
-            log_collision = arcade.check_for_collision(self.player_sprite, log)
-            if log_collision:
+            if arcade.check_for_collision(self.player_sprite, log):
                 self.player_sprite.left += log.logSpeed
+                frog_on_log = True
+                break
+
+                
         for log in self.animated_log_list:
             #with the animated logs (turtles) no collision occurs if they are not visible (under water)
             log_collision = arcade.check_for_collision(self.player_sprite, log) and log.visible == True
             if log_collision:
                 self.player_sprite.left += log.logSpeed
 
-        for car in self.car_list:
-            if arcade.check_for_collision(self.player_sprite, car):
-                self.player_sprite.center_x, self.player_sprite.center_y = 0, 0  # Reset to start
-                self.lives -= 1
+        lake_area_bottom = SCREEN_HEIGHT - 400
+        lake_area_top = SCREEN_HEIGHT - 70
 
-        # # move the obstacle
-        # self.x += self.velocity * delta_time
+        # check if player is in the lake area and not on a log
+        if lake_area_bottom <= self.player_sprite.center_y <= lake_area_top and not frog_on_log:
+            # Reset frog to starting position and decrease life count
+            self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
+            self.lives -= 1
 
         self.log_list.update()
         self.animated_log_list.update()
@@ -401,6 +419,9 @@ class FroggerGame(arcade.View):
             self.player_sprite.center_x += MOVEMENT_DISTANCE
             # rotate png right
             self.player_sprite.angle = 270
+
+        # TODO: escape key brings player back to start menu or a pause screen
+        # if key == arcade.key.ESCAPE:
 
 
 def main():
