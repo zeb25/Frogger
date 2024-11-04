@@ -11,9 +11,9 @@
  - **Branch**: I pushed changes to a branch called "lily-pads”
 
 ### David:
-- Log sprites
- - **Status**: Complete.  Did this really early becasue I had extra time.  3 different log types cross the screen with different patterns.  They will pick up the from and move him with them.
+- Change log sprites from rough draft of single brown logs to fully patterned identifiable logs.
+ - **Status**: Complete.  Did this really early becasue I had extra time.  3 different log types cross the screen with different patterns.  They will pick up the frog and move him with them.
 
 - Turtle Sprites
-- **Status**: Done.  Two different turtle patterns.  Both have turtles that rise and sink.  The move the frog unless sunk.
+- **Status**: Done.  Two different turtle patterns.  Both have turtles that rise and sink.  They move the frog unless sunk.
  - **Branch**: Pushed changes to "DavidBranchPart2"  which I probably should have named more descriptively.  Merged to main at the end.
