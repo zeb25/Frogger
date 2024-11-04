@@ -39,7 +39,7 @@ class UserFrog(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 145.5
 
 
-class Logs1(arcade.Sprite):  # lowest logs row, similar to Logs2
+'''class Logs1(arcade.Sprite):  # lowest logs row, similar to Logs2
     def __init__(self, filename=None, scale=1, image_x=0, image_y=0, image_width=0, image_height=0, center_x=0, center_y=0,
                  repeat_count_x=1, repeat_count_y=1, flipped_horizontally=False, flipped_vertically=False,
                  flipped_diagonally=False, hit_box_algorithm="Simple", hit_box_detail=4.5, texture=None, angle=0, logSpeed=4):
@@ -51,7 +51,7 @@ class Logs1(arcade.Sprite):  # lowest logs row, similar to Logs2
     def update(self):
         self.left += self.logSpeed
         if self.left >= 679:
-            self.right = -3 * 146  # Reset similar to Logs2
+            self.right = -3 * 146  # Reset similar to Logs2'''
 
 class Logs(arcade.Sprite): #lowest  logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
