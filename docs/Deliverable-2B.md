@@ -17,3 +17,8 @@
 - Turtle Sprites
 - **Status**: Done.  Two different turtle patterns.  Both have turtles that rise and sink.  They move the frog unless sunk.
  - **Branch**: Pushed changes to "DavidBranchPart2"  which I probably should have named more descriptively.  Merged to main at the end.
+
+### Zoe:
+- Add the logic for the frog to die if it is not on a log in the lake.
+ - **Status**: Completed but not merged with other changes. We are meeting tomorrow to figure out the merging issues.
+ - **Branch**: Changes are pushed to "hazardZones" branch
