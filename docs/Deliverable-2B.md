@@ -15,4 +15,4 @@
  - **Status**: Complete.  Did this really early becasue I had extra time.  3 different log types cross the screen with different patterns.  They will pick up the from and move him with them.
 -Turtle Sprites
 - **Status**: Done.  Two different turtle patterns.  Both have turtles that rise and sink.  The move the frog unless sunk.
- - **Branch**: Pushed changes to "DavidBranchPart2"  which I probably should have named more descriptively.
+ - **Branch**: Pushed changes to "DavidBranchPart2"  which I probably should have named more descriptively.  Merged to main at the end.
