@@ -1,3 +1,4 @@
+#TODO: clean up some of the numbers to have names
 import arcade
 from car import Car
 from frogger_config import MOVEMENT_DISTANCE, LANE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
