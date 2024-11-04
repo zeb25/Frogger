@@ -99,7 +99,7 @@ class LowerTurtles(arcade.Sprite): #lowest turtle
     def update(self):
         self.left += self.logSpeed
         if self.right <= 0:
-            self.right = 679
+            self.right = SCREEN_WIDTH + LANE_SIZE * 8
 
 class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
@@ -114,7 +114,7 @@ class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
         self.update_counter += 1
         self.left += self.logSpeed
         if self.right <= 0:
-            self.right = 679
+            self.right = SCREEN_WIDTH + LANE_SIZE * 8
         if self.update_counter < 25:
             self.texture = arcade.load_texture("Turtles.png")
         elif self.update_counter < 50:
@@ -130,6 +130,49 @@ class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
             self.visible = True
         elif self.update_counter < 150:
             self.texture = arcade.load_texture("TurtlesRising.png")
+        if self.update_counter > 150:
+            self.update_counter = 0
+
+class UpperTurtles(arcade.Sprite): #lowest turtle
+    def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
+        super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
+        self.logSpeed = logSpeed
+    def setLogSpeed(self, logSpeed):
+        self.logSpeed = logSpeed
+    def update(self):
+        self.left += self.logSpeed
+        if self.right <= 0:
+            self.right = SCREEN_WIDTH + LANE_SIZE * 8
+
+class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
+    def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
+        super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
+        self.logSpeed = logSpeed
+        self.texture = arcade.load_texture("TwoTurtles.png")
+        #self.visible = False
+    update_counter = 0
+    def setLogSpeed(self, logSpeed):
+        self.logSpeed = logSpeed
+    def update(self):
+        self.update_counter += 1
+        self.left += self.logSpeed
+        if self.right <= 0:
+            self.right = SCREEN_WIDTH + LANE_SIZE * 8
+        if self.update_counter < 25:
+            self.texture = arcade.load_texture("TwoTurtles.png")
+        elif self.update_counter < 50:
+            self.texture = arcade.load_texture("TwoTurtlesTucking1.png")   
+        elif self.update_counter < 75:
+            self.texture = arcade.load_texture("TwoTurtlesTucking2.png")
+        elif self.update_counter < 100:
+            self.texture = arcade.load_texture("TwoTurtlesTucking3.png")
+        elif self.update_counter == 100:
+            self.visible = False
+            #self.texture = arcade.load_texture("Water.png")
+        elif self.update_counter == 125:
+            self.visible = True
+        elif self.update_counter < 150:
+            self.texture = arcade.load_texture("TwoTurtlesRising.png")
         if self.update_counter > 150:
             self.update_counter = 0
 
@@ -194,7 +237,7 @@ class FroggerGame(arcade.View):
         log_source2 = "BigLogFinal.png"
         log_source3 = "MediumLogFinal2.png"
         turtle_source1 = "Turtles.png"
-        turtle_source2 = "TurtlesTucking1.png"
+        turtle_source2 = "TwoTurtles.png"
         log_length = 146
         #lane 1*************************************
         self.log_sprite = Logs(log_source, logSpeed=2) #creates log of the first variety
@@ -245,18 +288,36 @@ class FroggerGame(arcade.View):
         self.log_list.append(self.log_sprite)
         #end of log sprites---------------------------------------------
 
-        #Start Turtle Sprites
-        #Lower Turtles
-        '''self.log_sprite = LowerTurtles(turtle_source1, logSpeed=-1.5)
+        #Start Turtle Sprites--------------------------------------------
+        #Upper Turtles
+        #Blinking
+        self.log_sprite = UpperTurtlesAnimated(logSpeed=-3)
         self.log_sprite.left = SCREEN_WIDTH
+        self.log_sprite.bottom = LANE_SIZE * 11 
+        self.log_sprite.hit_box = [[-65, 0], [17, 0]]  #adjusts the hitbox of the turtles to be smaller
+        self.log_list2.append(self.log_sprite)
+        #Non blinking
+        for i in range(1,4):
+            self.log_sprite = UpperTurtles(turtle_source2, logSpeed=-3)
+            self.log_sprite.left = SCREEN_WIDTH + (LANE_SIZE * 4) * i
+            self.log_sprite.bottom = LANE_SIZE * 11 
+            self.log_sprite.hit_box = [[-65, 0], [17, 0]]  #adjusts the hitbox of the turtles to be smaller
+            self.log_list.append(self.log_sprite)
+        
+        #Lower Turtles
+        #Non blinking
+        for i in range(4):
+            self.log_sprite = LowerTurtles(turtle_source1, logSpeed=-3)
+            self.log_sprite.left = SCREEN_WIDTH + (LANE_SIZE * 4) * i
+            self.log_sprite.bottom = LANE_SIZE * 8 
+            self.log_sprite.hit_box = [[-65, 0], [66, 0]]  #adjusts the hitbox of the turtles to be smaller
+            self.log_list.append(self.log_sprite)
+        #Blinking
+        self.log_sprite = LowerTurtlesAnimated(logSpeed=-3)
+        self.log_sprite.left = SCREEN_WIDTH + LANE_SIZE * 16
         self.log_sprite.bottom = LANE_SIZE * 8 
         self.log_sprite.hit_box = [[-65, 0], [66, 0]]  #adjusts the hitbox of the turtles to be smaller
-        self.log_list.append(self.log_sprite)'''
-        self.log_sprite = LowerTurtlesAnimated(logSpeed=-1.5)
-        self.log_sprite.left = SCREEN_WIDTH #+ LANE_SIZE * 5
-        self.log_sprite.bottom = LANE_SIZE * 8 
-        self.log_sprite.hit_box = [[-65, 0], [66, 0]]  #adjusts the hitbox of the turtles to be smaller
-        self.log_list2.append(self.log_sprite)#self.log_list2.append(self.log_sprite)
+        self.log_list2.append(self.log_sprite)
         #end of turtle sprites----------------------------------------------
 
     def on_draw(self):
@@ -268,9 +329,9 @@ class FroggerGame(arcade.View):
 
         # draw all the sprites
         self.log_list.draw()
+        #self.log_list.draw_hit_boxes()
         self.log_list2.draw()
         self.player_list.draw()
-
         # draw the score and lives at the top of the screen
         arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
         arcade.draw_text(f"Lives: {self.lives}", SCREEN_WIDTH - 100, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
