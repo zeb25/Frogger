@@ -9,6 +9,8 @@ SCREEN_WIDTH = 679
 SCREEN_HEIGHT = 776
 SCREEN_TITLE = "Frogger"
 
+Updates = 0
+
 
 class MenuView(arcade.View):
     """ Class that manages the 'menu' view. """
@@ -92,13 +94,44 @@ class LowerTurtles(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
-    #I don't think I need this
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
     def update(self):
         self.left += self.logSpeed
         if self.right <= 0:
             self.right = 679
+
+class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
+    def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
+        super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
+        self.logSpeed = logSpeed
+        self.texture = arcade.load_texture("Turtles.png")
+        #self.visible = False
+    update_counter = 0
+    def setLogSpeed(self, logSpeed):
+        self.logSpeed = logSpeed
+    def update(self):
+        self.update_counter += 1
+        self.left += self.logSpeed
+        if self.right <= 0:
+            self.right = 679
+        if self.update_counter < 25:
+            self.texture = arcade.load_texture("Turtles.png")
+        elif self.update_counter < 50:
+            self.texture = arcade.load_texture("TurtlesTucking1.png")   
+        elif self.update_counter < 75:
+            self.texture = arcade.load_texture("TurtlesTucking2.png")
+        elif self.update_counter < 100:
+            self.texture = arcade.load_texture("TurtlesTucking3.png")
+        elif self.update_counter == 100:
+            self.visible = False
+            #self.texture = arcade.load_texture("Water.png")
+        elif self.update_counter == 125:
+            self.visible = True
+        elif self.update_counter < 150:
+            self.texture = arcade.load_texture("TurtlesRising.png")
+        if self.update_counter > 150:
+            self.update_counter = 0
 
 
 class FroggerGame(arcade.View):
@@ -110,6 +143,7 @@ class FroggerGame(arcade.View):
         self.player_list = None
         self.background = None
         self.log_list = None
+        self.log_list2 = None
 
         # set up the player info
         self.player_sprite = None
@@ -133,6 +167,7 @@ class FroggerGame(arcade.View):
         # sprite lists
         self.player_list = arcade.SpriteList()
         self.log_list = arcade.SpriteList()
+        self.log_list2 = arcade.SpriteList()
 
         # load frogger grid
         self.background = arcade.load_texture("assets/froggerGrid.png")
@@ -159,6 +194,7 @@ class FroggerGame(arcade.View):
         log_source2 = "BigLogFinal.png"
         log_source3 = "MediumLogFinal2.png"
         turtle_source1 = "Turtles.png"
+        turtle_source2 = "TurtlesTucking1.png"
         log_length = 146
         #lane 1*************************************
         self.log_sprite = Logs(log_source, logSpeed=2) #creates log of the first variety
@@ -211,11 +247,16 @@ class FroggerGame(arcade.View):
 
         #Start Turtle Sprites
         #Lower Turtles
-        self.log_sprite = LowerTurtles(turtle_source1, logSpeed=-.5)
-        self.log_sprite.right = 0
+        '''self.log_sprite = LowerTurtles(turtle_source1, logSpeed=-1.5)
+        self.log_sprite.left = SCREEN_WIDTH
         self.log_sprite.bottom = LANE_SIZE * 8 
-        self.log_sprite.hit_box = [[-65, 0], [68, 0]]
-        self.log_list.append(self.log_sprite)
+        self.log_sprite.hit_box = [[-65, 0], [66, 0]]  #adjusts the hitbox of the turtles to be smaller
+        self.log_list.append(self.log_sprite)'''
+        self.log_sprite = LowerTurtlesAnimated(logSpeed=-1.5)
+        self.log_sprite.left = SCREEN_WIDTH #+ LANE_SIZE * 5
+        self.log_sprite.bottom = LANE_SIZE * 8 
+        self.log_sprite.hit_box = [[-65, 0], [66, 0]]  #adjusts the hitbox of the turtles to be smaller
+        self.log_list2.append(self.log_sprite)#self.log_list2.append(self.log_sprite)
         #end of turtle sprites----------------------------------------------
 
     def on_draw(self):
@@ -227,6 +268,7 @@ class FroggerGame(arcade.View):
 
         # draw all the sprites
         self.log_list.draw()
+        self.log_list2.draw()
         self.player_list.draw()
 
         # draw the score and lives at the top of the screen
@@ -241,14 +283,18 @@ class FroggerGame(arcade.View):
         self.player_list.update()
 
         for log in self.log_list:
-            log_collision = arcade.check_for_collision(self.player_sprite, log) #and log.left <= self.player_sprite.center_x <= log.right
+            log_collision = arcade.check_for_collision(self.player_sprite, log)
             if log_collision:
                 self.player_sprite.left += log.logSpeed
-
+        for log in self.log_list2:
+            log_collision = arcade.check_for_collision(self.player_sprite, log) and log.visible == True
+            if log_collision:
+                self.player_sprite.left += log.logSpeed
         # # move the obstacle
         # self.x += self.velocity * delta_time
 
         self.log_list.update()
+        self.log_list2.update()
 
 
     def on_key_press(self, key, modifiers):
