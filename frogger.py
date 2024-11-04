@@ -373,7 +373,6 @@ class FroggerGame(arcade.View):
             if arcade.check_for_collision(self.player_sprite, log):
                 self.player_sprite.left += log.logSpeed
                 frog_on_log = True
-                break
 
                 
         for log in self.animated_log_list:
@@ -381,6 +380,7 @@ class FroggerGame(arcade.View):
             log_collision = arcade.check_for_collision(self.player_sprite, log) and log.visible == True
             if log_collision:
                 self.player_sprite.left += log.logSpeed
+                frog_on_log = True
 
         lake_area_bottom = SCREEN_HEIGHT - 400
         lake_area_top = SCREEN_HEIGHT - 70
