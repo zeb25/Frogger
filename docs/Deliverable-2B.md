@@ -20,5 +20,5 @@
 
 ### Zoe:
 - Add the logic for the frog to die if it is not on a log in the lake.
- - **Status**: Completed but not merged with other changes. We are meeting tomorrow to figure out the merging issues.
+ - **Status**: Completed but not merged with other changes. We are meeting tomorrow to figure out the merging issues. I added another row of logs where the turtles would be because at the time the turtles hadn't been implemented yet (this row of logs will have to be removed for merging).
  - **Branch**: Changes are pushed to "hazardZones" branch
