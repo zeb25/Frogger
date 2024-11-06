@@ -186,7 +186,7 @@ class FroggerGame(arcade.View):
         # set up the player info
         self.player_sprite = None
 
-        # default score and lives
+        # default score, lives
         self.score = 0
         self.lives = 3
 
