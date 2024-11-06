@@ -38,6 +38,36 @@ class UserFrog(arcade.Sprite):
         elif self.top > SCREEN_HEIGHT - 145.5:
             self.top = SCREEN_HEIGHT - 145.5
 
+
+    def on_key_press(self, key, modifiers):
+        """Override to restrict movement within lily pad gaps."""
+        new_x = self.center_x
+        if key == arcade.key.LEFT:
+            new_x -= MOVEMENT_DISTANCE
+            self.angle = 90
+        elif key == arcade.key.RIGHT:
+            new_x += MOVEMENT_DISTANCE
+            self.angle = 270
+
+        # Define boundaries of lily pad gaps (adjust these based on your image)
+        lily_pad_gaps = [
+            (SCREEN_WIDTH * 1 / 13, SCREEN_WIDTH * 3 / 10),
+            (SCREEN_WIDTH * 3 / 10, SCREEN_WIDTH * 5 / 10),
+            (SCREEN_WIDTH * 5 / 10, SCREEN_WIDTH * 7 / 10),
+            (SCREEN_WIDTH * 7 / 10, SCREEN_WIDTH * 9 / 10)
+        ]
+
+        # Check if new_x falls within any of the lily pad gaps
+        within_gap = any(start <= new_x <= end for start, end in lily_pad_gaps)
+        
+        if within_gap:
+            self.center_x = new_x    
+
+
+
+
+
+
 class Logs(arcade.Sprite): #lowest  logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
@@ -171,6 +201,15 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
             self.update_counter = 0  #restart turtle loop
 
 
+### -------------LIZ: add lily pad class-------------------------------------------
+class LilyPad(arcade.Sprite):  
+    def __init__(self, filename=None, scale=1, center_x=0, center_y=0):
+        super().__init__(filename, scale)
+        self.center_x = center_x
+        self.center_y = center_y
+
+
+
 class FroggerGame(arcade.View):
     def __init__(self):
         """ Initializer """
@@ -180,8 +219,14 @@ class FroggerGame(arcade.View):
         self.player_list = None
         self.background = None
         self.log_list = None
+
+        ### --------------LIZ: add lily pad list---------------------
+        self.lilypad_list = None
+        ### --------------LIZ: add lily pad list---------------------
+
         self.animated_log_list = None
         self.car_list = None
+
 
         # set up the player info
         self.player_sprite = None
@@ -195,11 +240,21 @@ class FroggerGame(arcade.View):
 
     def setup(self):
         """ Set up the game and initialize the variables. """
+
+        
+        # sprite lists
+        self.player_list = arcade.SpriteList()
+        self.log_list = arcade.SpriteList()
+        ### --------------LIZ: add lily pad list---------------------
+        self.lilypad_list = arcade.SpriteList()
+        ### --------------LIZ: add lily pad list---------------------
+
         # sprite lists
         self.player_list = arcade.SpriteList()
         self.log_list = arcade.SpriteList()  #list of logs (TURTLES ARE CONSIDERED LOGS)
         self.animated_log_list = arcade.SpriteList()  #list of animated logs (turtles)
         self.car_list = arcade.SpriteList()
+
 
         # load frogger grid
         self.background = arcade.load_texture("assets/froggerGrid.png")
@@ -323,6 +378,25 @@ class FroggerGame(arcade.View):
         self.animated_log_list.append(self.log_sprite)
         #end of turtle sprites----------------------------------------------
 
+        lilypad_source = "test-lily-pad.png"
+    
+    # Precise x-coordinates for the lily pads to be centered in the gaps
+        lily_pad_positions = [
+            (SCREEN_WIDTH * 1 / 13, LANE_SIZE * 14 - 40),     # First gap
+            (SCREEN_WIDTH * 3 / 10, LANE_SIZE * 14 - 40),     # Second gap
+            (SCREEN_WIDTH * 5 / 10, LANE_SIZE * 14 - 40),     # Third gap
+            (SCREEN_WIDTH * 7 / 10, LANE_SIZE * 14 - 40),     # Fourth gap
+            (SCREEN_WIDTH * 9 / 10, LANE_SIZE * 14 - 40)      # Fifth gap
+    ]
+
+    # Create and position lily pads
+        for position in lily_pad_positions:
+            lily_pad = LilyPad(lilypad_source, 2)  # Adjust scale if necessary
+            lily_pad.center_x, lily_pad.center_y = position
+            self.lilypad_list.append(lily_pad)  # Add to the lily pad list
+
+
+         
     def on_draw(self):
         """ Render the screen. """
         self.clear()
@@ -335,7 +409,14 @@ class FroggerGame(arcade.View):
         #self.log_list.draw_hit_boxes()
         self.animated_log_list.draw()
         self.player_list.draw()
+
+        ### --------LIZ: draw lily pad sprites-------
+        self.lilypad_list.draw()
+        ### --------LIZ: draw lily pad sprites-------
+
+
         self.car_list.draw()
+
 
         # draw the score and lives at the top of the screen
         arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
@@ -376,8 +457,13 @@ class FroggerGame(arcade.View):
             self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
             self.lives -= 1
 
+
+        ### LIZ: update lily pads
+
+
         self.log_list.update()
         self.animated_log_list.update()
+
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
