@@ -26,6 +26,10 @@ class MenuView(arcade.View):
 
 
 class UserFrog(arcade.Sprite):
+    ##________________________________________________________
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    ##________________________________________________________
     def update(self):
         """ Ensure the player stays within bounds. """
         if self.left < 5:
@@ -35,33 +39,11 @@ class UserFrog(arcade.Sprite):
 
         if self.bottom < 0:
             self.bottom = 0
-        elif self.top > SCREEN_HEIGHT - 145.5:
-            self.top = SCREEN_HEIGHT - 145.5
+        elif self.top > SCREEN_HEIGHT - 100:
+            self.top = SCREEN_HEIGHT - 100
 
 
-    def on_key_press(self, key, modifiers):
-        """Override to restrict movement within lily pad gaps."""
-        new_x = self.center_x
-        if key == arcade.key.LEFT:
-            new_x -= MOVEMENT_DISTANCE
-            self.angle = 90
-        elif key == arcade.key.RIGHT:
-            new_x += MOVEMENT_DISTANCE
-            self.angle = 270
-
-        # Define boundaries of lily pad gaps (adjust these based on your image)
-        lily_pad_gaps = [
-            (SCREEN_WIDTH * 1 / 13, SCREEN_WIDTH * 3 / 10),
-            (SCREEN_WIDTH * 3 / 10, SCREEN_WIDTH * 5 / 10),
-            (SCREEN_WIDTH * 5 / 10, SCREEN_WIDTH * 7 / 10),
-            (SCREEN_WIDTH * 7 / 10, SCREEN_WIDTH * 9 / 10)
-        ]
-
-        # Check if new_x falls within any of the lily pad gaps
-        within_gap = any(start <= new_x <= end for start, end in lily_pad_gaps)
-        
-        if within_gap:
-            self.center_x = new_x    
+     
 
 
 
