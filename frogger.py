@@ -44,6 +44,32 @@ class UserFrog(arcade.Sprite):
         elif self.top > SCREEN_HEIGHT - 145.5:
             self.top = SCREEN_HEIGHT - 145.5
 
+    def on_key_press(self, key, modifiers):
+        """Override to restrict movement within lily pad gaps."""
+        new_x = self.center_x
+        if key == arcade.key.LEFT:
+            new_x -= MOVEMENT_DISTANCE
+            self.angle = 90
+        elif key == arcade.key.RIGHT:
+            new_x += MOVEMENT_DISTANCE
+            self.angle = 270
+
+        # Define boundaries of lily pad gaps (adjust these based on your image)
+        lily_pad_gaps = [
+            (SCREEN_WIDTH * 1 / 13, SCREEN_WIDTH * 3 / 10),
+            (SCREEN_WIDTH * 3 / 10, SCREEN_WIDTH * 5 / 10),
+            (SCREEN_WIDTH * 5 / 10, SCREEN_WIDTH * 7 / 10),
+            (SCREEN_WIDTH * 7 / 10, SCREEN_WIDTH * 9 / 10)
+        ]
+
+        # Check if new_x falls within any of the lily pad gaps
+        within_gap = any(start <= new_x <= end for start, end in lily_pad_gaps)
+        
+        if within_gap:
+            self.center_x = new_x    
+
+
+
 
 
 class Logs(arcade.Sprite): #lowest  logs
@@ -89,6 +115,15 @@ class Logs3(arcade.Sprite): #highest logs
             self.right = 0
 
 
+### -------------LIZ: add lily pad class-------------------------------------------
+class LilyPad(arcade.Sprite):  
+    def __init__(self, filename=None, scale=1, center_x=0, center_y=0):
+        super().__init__(filename, scale)
+        self.center_x = center_x
+        self.center_y = center_y
+
+
+
 class FroggerGame(arcade.View):
     def __init__(self):
         """ Initializer """
@@ -98,6 +133,9 @@ class FroggerGame(arcade.View):
         self.player_list = None
         self.background = None
         self.log_list = None
+        ### --------------LIZ: add lily pad list---------------------
+        self.lilypad_list = None
+        ### --------------LIZ: add lily pad list---------------------
 
         # set up the player info
         self.player_sprite = None
@@ -117,10 +155,12 @@ class FroggerGame(arcade.View):
     def setup(self):
         """ Set up the game and initialize the variables. """
         
-
         # sprite lists
         self.player_list = arcade.SpriteList()
         self.log_list = arcade.SpriteList()
+        ### --------------LIZ: add lily pad list---------------------
+        self.lilypad_list = arcade.SpriteList()
+        ### --------------LIZ: add lily pad list---------------------
 
         # load frogger grid
         self.background = arcade.load_texture("assets/froggerGrid.png")
@@ -185,6 +225,25 @@ class FroggerGame(arcade.View):
         self.log_list.append(self.log_sprite)
         #end of log sprites----------------------------------------------
 
+        lilypad_source = "test-lily-pad.png"
+    
+    # Precise x-coordinates for the lily pads to be centered in the gaps
+        lily_pad_positions = [
+            (SCREEN_WIDTH * 1 / 13, LANE_SIZE * 14 - 40),     # First gap
+            (SCREEN_WIDTH * 3 / 10, LANE_SIZE * 14 - 40),     # Second gap
+            (SCREEN_WIDTH * 5 / 10, LANE_SIZE * 14 - 40),     # Third gap
+            (SCREEN_WIDTH * 7 / 10, LANE_SIZE * 14 - 40),     # Fourth gap
+            (SCREEN_WIDTH * 9 / 10, LANE_SIZE * 14 - 40)      # Fifth gap
+    ]
+
+    # Create and position lily pads
+        for position in lily_pad_positions:
+            lily_pad = LilyPad(lilypad_source, 2)  # Adjust scale if necessary
+            lily_pad.center_x, lily_pad.center_y = position
+            self.lilypad_list.append(lily_pad)  # Add to the lily pad list
+
+
+         
     def on_draw(self):
         """ Render the screen. """
         self.clear()
@@ -195,6 +254,10 @@ class FroggerGame(arcade.View):
         # draw all the sprites
         self.log_list.draw()
         self.player_list.draw()
+        ### --------LIZ: draw lily pad sprites-------
+        self.lilypad_list.draw()
+        ### --------LIZ: draw lily pad sprites-------
+
 
         # draw the score and lives at the top of the screen
         arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
@@ -216,6 +279,8 @@ class FroggerGame(arcade.View):
         # self.x += self.velocity * delta_time
 
         self.log_list.update()
+
+        ### LIZ: update lily pads
 
 
     def on_key_press(self, key, modifiers):
