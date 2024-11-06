@@ -6,4 +6,5 @@ Tasks:
 - Add side screen collisions (easy, essential)
 - Improve upper bounds around lily pads (hard, essential)
 - Change lily pad color/mark lily pad with frog (medium, essential)
-- Implement sounds (medium, nice to have)
+- Improve start screen (easy, important)
+- Implement sounds (medium, nice to have) (not currently planned but might be a stretch goal)
