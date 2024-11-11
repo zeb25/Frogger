@@ -186,9 +186,11 @@ class FroggerGame(arcade.View):
         # set up the player info
         self.player_sprite = None
 
-        # default score and lives
+        # default score, lives, game over, timer
         self.score = 0
         self.lives = 3
+        self.game_over = False
+        self.timer = 60
 
         # track y position for score
         self.max_y_position = 0
@@ -230,8 +232,8 @@ class FroggerGame(arcade.View):
             car = Car(car_sprite, car_speed = 2 + i * 0.5, direction = 1 if i % 2 == 0 else -1)
             car.center_x = i * 100
             car.bottom = LANE_SIZE * lane
+            car.height *= 0.9
             self.car_list.append(car)
-
 
         #create log sprites--------------------------------------------
         #log_source = "Log (1).png"
@@ -330,27 +332,56 @@ class FroggerGame(arcade.View):
         # draw the background
         arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
-        # draw all the sprites
+        # draw sprites:
         self.log_list.draw()
-        #self.log_list.draw_hit_boxes()
+        # self.log_list.draw_hit_boxes()
         self.animated_log_list.draw()
-        self.player_list.draw()
         self.car_list.draw()
 
         # draw the score and lives at the top of the screen
         arcade.draw_text(f"Score: {self.score}", 10, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
         arcade.draw_text(f"Lives: {self.lives}", SCREEN_WIDTH - 100, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE, 20)
+        arcade.draw_text(f"Time Remaining: {int(self.timer)}", SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 30, arcade.color.YELLOW_ROSE,20)
+
+        # draw game over text and remove frog, otherwise draw frog as usual
+        if self.game_over:
+            arcade.draw_text("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
+                             arcade.color.WHITE, font_size=40, anchor_x="center")
+            arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
+                             arcade.color.WHITE, font_size=20, anchor_x="center")
+
+        else:
+            self.player_list.draw()
 
     def on_update(self, delta_time):
         """ Movement and game logic """
+        if self.game_over:
+            return
+
+        if self.lives <= 0:
+            self.game_over = True
+
+        self.timer -= delta_time
+        if self.timer <= 0:
+            self.lives -= 1
+            self.timer = 60
+
         self.player_list.update()
         self.car_list.update()
 
         # check for collision with cars
         for car in self.car_list:
             if arcade.check_for_collision(self.player_sprite, car):
-                self.player_sprite.center_x, self.player_sprite.center_y = 0, 0  # Reset to start if collision
                 self.lives -= 1
+                self.timer = 60
+                if self.lives <= 0:
+                    # make frog disappear when game over
+                    self.player_sprite.scale = 0
+                else:
+                    # reset to start if collision and lives remaining
+                    self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
+                    self.player_sprite.angle = 0
+
 
         # check for collision with logs
         frog_on_log = False
@@ -374,13 +405,20 @@ class FroggerGame(arcade.View):
         if lake_area_bottom <= self.player_sprite.center_y <= lake_area_top and not frog_on_log:
             # Reset frog to starting position and decrease life count
             self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
+            self.player_sprite.angle = 0
             self.lives -= 1
+            self.timer = 60
 
         self.log_list.update()
         self.animated_log_list.update()
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
+        if self.game_over and key == arcade.key.ENTER:
+            frogger_game = FroggerGame()
+            frogger_game.setup()
+            self.window.show_view(frogger_game)
+
         if key == arcade.key.UP:
             new_y = self.player_sprite.center_y + MOVEMENT_DISTANCE
             self.player_sprite.center_y = new_y
