@@ -93,6 +93,8 @@ class Logs3(arcade.Sprite): # highest logs
         if self.left >= SCREEN_WIDTH:
             self.right = -194
 
+
+
 class LowerTurtles(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
@@ -184,11 +186,12 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
 
 
 ### -------------LIZ: add lily pad class-------------------------------------------
-class LilyPad(arcade.Sprite):  
-    def __init__(self, filename=None, scale=1, center_x=0, center_y=0):
-        super().__init__(filename, scale)
-        self.center_x = center_x
-        self.center_y = center_y
+class LilyPad(arcade.Sprite): 
+   def __init__(self, filename=None, scale=1, center_x=0, center_y=0):
+       super().__init__(filename, scale)
+       self.center_x = center_x
+       self.center_y = center_y
+### -------------LIZ: add lily pad class-------------------------------
 
 
 
@@ -362,24 +365,23 @@ class FroggerGame(arcade.View):
         self.animated_log_list.append(self.log_sprite)
         #end of turtle sprites----------------------------------------------
 
-        lilypad_source = "test-lily-pad.png"
+    #-------------- lily pads-------------------------------------
+        lilypad_source = "lilly-pad2.png"
     
-    # Precise x-coordinates for the lily pads to be centered in the gaps
+    # x and y coordinates for the lily pads
         lily_pad_positions = [
-            (SCREEN_WIDTH * 1 / 13, LANE_SIZE * 14 - 40),     # First gap
-            (SCREEN_WIDTH * 3 / 10, LANE_SIZE * 14 - 40),     # Second gap
-            (SCREEN_WIDTH * 5 / 10, LANE_SIZE * 14 - 40),     # Third gap
-            (SCREEN_WIDTH * 7 / 10, LANE_SIZE * 14 - 40),     # Fourth gap
-            (SCREEN_WIDTH * 9 / 10, LANE_SIZE * 14 - 40)      # Fifth gap
-    ]
-
-    # Create and position lily pads
+           (SCREEN_WIDTH * 1 / 9, LANE_SIZE * 14 - 40),     
+           (SCREEN_WIDTH * 3 / 9, LANE_SIZE * 14 - 40),     
+           (SCREEN_WIDTH * 5 / 9.25, LANE_SIZE * 14 - 40),     
+           (SCREEN_WIDTH * 7 / 9.5, LANE_SIZE * 14 - 40),    
+           (SCREEN_WIDTH * 9 / 9.5, LANE_SIZE * 14 - 40)]
+    
+    # create a lilypad sprite at each specified cooridnate
         for position in lily_pad_positions:
-            lily_pad = LilyPad(lilypad_source, 2)  # Adjust scale if necessary
-            lily_pad.center_x, lily_pad.center_y = position
-            self.lilypad_list.append(lily_pad)  # Add to the lily pad list
-
-
+           lily_pad = LilyPad(lilypad_source, 2) 
+           lily_pad.center_x, lily_pad.center_y = position
+           self.lilypad_list.append(lily_pad) 
+    #-------------- lily pads-------------------------------------
          
     def on_draw(self):
         """ Render the screen. """
@@ -475,7 +477,25 @@ class FroggerGame(arcade.View):
 
 
         ### LIZ: update lily pads
+        ##_________________________________________________________________
+       # Check for collisions with lily pads
+        for lily_pad in self.lilypad_list: # loop through each lilypad in the sprite list
+           if arcade.check_for_collision(self.player_sprite, lily_pad):
+               self.player_sprite.frog_on_lilypad = True # check if frog is colliding with the lilypad
 
+               # align the frog in the middle of the lilypad
+               self.player_sprite.center_x = lily_pad.center_x
+               self.player_sprite.center_y = lily_pad.center_y
+               # coordiantes to align the frog with the middle of the lilypad
+
+
+               self.player_sprite.angle = 180 # flip the frog upon collision with lily pad
+
+
+               self.player_sprite.center_x += -17
+               self.player_sprite.center_y += 15
+               break
+       ##____________________________________________
 
         self.log_list.update()
         self.animated_log_list.update()
@@ -527,3 +547,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
