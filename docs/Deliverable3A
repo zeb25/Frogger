@@ -1,9 +1,15 @@
 Deliverable 3A
 
 Tasks:
-- Add game over screen (easy, essential)
-- Add timer (medium, nice to have)
+- Add game over screen at lives = 0 (easy, essential)
+- Add timer for frog death/restart (medium, nice to have)
 - Add side screen collisions (easy, essential)
 - Improve upper bounds around lily pads (hard, essential)
 - Change lily pad color/mark lily pad with frog (medium, essential)
-- Implement sounds (medium, nice to have)
+- Implement sounds (medium, nice to have) (not currently planned but might be a stretch goal)
+- Wall collision = death (hard, essential)
+- Update start screen with full instructions text (easy, important)
+- Blue frog (hard, nice-to-have)
+- Flies (medium, nice-to-have)
+- Tidy code: move classes into separate files and all attachments into the assets folder (easy, nice-to-have)
+- Comment all functions (easy, nice-to-have)
