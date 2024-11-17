@@ -418,13 +418,6 @@ class FroggerGame(arcade.View):
     
         # x and y coordinates for the lily pads
         lily_pad_positions = [
-           (SCREEN_WIDTH * 1 / 9, LANE_SIZE * 14 - 40),     
-           (SCREEN_WIDTH * 3 / 9, LANE_SIZE * 14 - 40),     
-           (SCREEN_WIDTH * 5 / 9.25, LANE_SIZE * 14 - 40),     
-           (SCREEN_WIDTH * 7 / 9.5, LANE_SIZE * 14 - 40),    
-           (SCREEN_WIDTH * 9 / 9.5, LANE_SIZE * 14 - 40)]
-
-        lily_pad_positions = [
            (SMALL_GRASS + WATER / 2, LANE_SIZE * 14 - 40),     
            (SMALL_GRASS + WATER / 2 + (GRASS + WATER), LANE_SIZE * 14 - 40),     
            (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 2, LANE_SIZE * 14 - 40),     
