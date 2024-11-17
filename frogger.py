@@ -414,7 +414,7 @@ class FroggerGame(arcade.View):
         self.boundary_list.append(self.boundary_sprite)
         #end of upper boundary sprite----------------------------------------------------------------
 
-        lilypad_source = "lilly-pad3.png"
+        lilypad_source = "lily-pad3.png"
     
         # x and y coordinates for the lily pads
         lily_pad_positions = [
