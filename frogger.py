@@ -368,25 +368,53 @@ class FroggerGame(arcade.View):
         self.animated_log_list.append(self.log_sprite)
         #end of turtle sprites----------------------------------------------
 
-        #upper boundary Sprite
-        self.boundary_sprite = arcade.SpriteSolidColor(width=1, height=1, color=arcade.color.ASH_GREY)
+        #upper boundary Sprite---------------------------------------------------------------------------
+        '''
+        self.boundary_sprite = arcade.Sprite("single_pixel.png", scale=1.0)
         self.boundary_sprite.left = 0
         self.boundary_sprite.bottom = LANE_SIZE * 13
         WATER_GAP = 145
         GRASS_GAP = 56
         SMALL_GRASS_GAP = 21
         BOUNDARY_HEIGHT = int(LANE_SIZE) + 10
-        self.boundary_sprite.hit_box = [[0,BOUNDARY_HEIGHT],[0, 0],
+        self.boundary_sprite.hit_box = [[0,BOUNDARY_HEIGHT + 10],[0, 0],
         [SMALL_GRASS_GAP, 0], [SMALL_GRASS_GAP,BOUNDARY_HEIGHT],[76,BOUNDARY_HEIGHT],[76,0],
         [SMALL_GRASS_GAP + WATER_GAP,0],[SMALL_GRASS_GAP + WATER_GAP,BOUNDARY_HEIGHT],[SMALL_GRASS_GAP + WATER_GAP + GRASS_GAP,BOUNDARY_HEIGHT],[SMALL_GRASS_GAP + WATER_GAP + GRASS_GAP,0],
         [SMALL_GRASS_GAP + WATER_GAP * 2,0],[SMALL_GRASS_GAP + WATER_GAP * 2,BOUNDARY_HEIGHT],[SMALL_GRASS_GAP + WATER_GAP * 2 + GRASS_GAP,BOUNDARY_HEIGHT],[SMALL_GRASS_GAP + WATER_GAP * 2 + GRASS_GAP,0],#[311,0],[311,70],[367,70],[367,0],
         [SMALL_GRASS_GAP + WATER_GAP * 3,0],[SMALL_GRASS_GAP + WATER_GAP * 3,BOUNDARY_HEIGHT],[SMALL_GRASS_GAP + WATER_GAP * 3 + GRASS_GAP,BOUNDARY_HEIGHT],[SMALL_GRASS_GAP + WATER_GAP * 3 + GRASS_GAP,0],#[456,0],[456,70],[512,70],[512,0],
         [SMALL_GRASS_GAP + WATER_GAP * 4,0],[SMALL_GRASS_GAP + WATER_GAP * 4,BOUNDARY_HEIGHT],[SMALL_GRASS_GAP + WATER_GAP * 4 + GRASS_GAP,BOUNDARY_HEIGHT],[SMALL_GRASS_GAP + WATER_GAP * 4 + GRASS_GAP,0],#[601,0],[601,70],[657,70],[657,0],
-        [SMALL_GRASS_GAP * 2 + WATER_GAP * 4 + GRASS_GAP,0],[SMALL_GRASS_GAP * 2 + WATER_GAP * 4 + GRASS_GAP,BOUNDARY_HEIGHT]]
-        self.boundary_list.append(self.boundary_sprite)
-        #end of upper boundary sprite
+        [SMALL_GRASS_GAP * 2 + WATER_GAP * 4 + GRASS_GAP,0],[SMALL_GRASS_GAP * 2 + WATER_GAP * 4 + GRASS_GAP,BOUNDARY_HEIGHT + 10]]
+        self.boundary_sprite._hit_box_detail = 80
+        self.boundary_list.append(self.boundary_sprite)'''
 
-        lilypad_source = "lilly-pad2.png"
+        WATER = 62
+        GRASS = 83
+        SMALL_GRASS = 19
+        BOUNDARY_HEIGHT = int(LANE_SIZE) + 10
+        for i in range(4):
+            self.boundary_sprite = arcade.SpriteSolidColor(width=GRASS, height=BOUNDARY_HEIGHT, color=arcade.color.ASH_GREY)
+            self.boundary_sprite.left = SMALL_GRASS + WATER + i * (GRASS + WATER)
+            self.boundary_sprite.bottom = LANE_SIZE * 13
+            self.boundary_sprite.visible = False
+            self.boundary_list.append(self.boundary_sprite)
+        self.boundary_sprite = arcade.SpriteSolidColor(width = SMALL_GRASS, height=BOUNDARY_HEIGHT, color=arcade.color.ASH_GREY)
+        self.boundary_sprite.left = 0
+        self.boundary_sprite.bottom = LANE_SIZE * 13
+        self.boundary_sprite.visible = False
+        self.boundary_list.append(self.boundary_sprite)
+        self.boundary_sprite = arcade.SpriteSolidColor(width = SMALL_GRASS, height=BOUNDARY_HEIGHT, color=arcade.color.ASH_GREY)
+        self.boundary_sprite.left = SMALL_GRASS + 5 * WATER + 4 * GRASS
+        self.boundary_sprite.bottom = LANE_SIZE * 13
+        self.boundary_sprite.visible = False
+        self.boundary_list.append(self.boundary_sprite)
+        self.boundary_sprite = arcade.SpriteSolidColor(width = SCREEN_WIDTH, height=int(LANE_SIZE), color=arcade.color.ASH_GREY)
+        self.boundary_sprite.left = 0
+        self.boundary_sprite.bottom = LANE_SIZE * 14
+        self.boundary_sprite.visible = False
+        self.boundary_list.append(self.boundary_sprite)
+        #end of upper boundary sprite----------------------------------------------------------------
+
+        lilypad_source = "lilly-pad3.png"
     
         # x and y coordinates for the lily pads
         lily_pad_positions = [
@@ -395,11 +423,17 @@ class FroggerGame(arcade.View):
            (SCREEN_WIDTH * 5 / 9.25, LANE_SIZE * 14 - 40),     
            (SCREEN_WIDTH * 7 / 9.5, LANE_SIZE * 14 - 40),    
            (SCREEN_WIDTH * 9 / 9.5, LANE_SIZE * 14 - 40)]
-    
+
+        lily_pad_positions = [
+           (SMALL_GRASS + WATER / 2, LANE_SIZE * 14 - 40),     
+           (SMALL_GRASS + WATER / 2 + (GRASS + WATER), LANE_SIZE * 14 - 40),     
+           (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 2, LANE_SIZE * 14 - 40),     
+           (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 3, LANE_SIZE * 14 - 40),    
+           (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 4, LANE_SIZE * 14 - 40)]
         # create a lilypad sprite at each specified cooridnate
         for position in lily_pad_positions:
            lily_pad = LilyPad(lilypad_source, 2) 
-           lily_pad.center_x, lily_pad.center_y = position
+           lily_pad.center_x, lily_pad.bottom = position
            self.lilypad_list.append(lily_pad) 
     #-------------- lily pads-------------------------------------
          
@@ -415,6 +449,7 @@ class FroggerGame(arcade.View):
         # self.log_list.draw_hit_boxes()
         self.animated_log_list.draw()
         self.player_list.draw()
+        self.player_list.draw_hit_boxes(color=arcade.color.RAZZMIC_BERRY)
 
         ### --------LIZ: draw lily pad sprites-------
         self.lilypad_list.draw()
@@ -424,6 +459,7 @@ class FroggerGame(arcade.View):
         self.car_list.draw()
         self.boundary_list.draw()
         self.boundary_list.draw_hit_boxes(color=arcade.color.RED)
+        self.lilypad_list.draw_hit_boxes(color=arcade.color.RED)
 
 
         # draw the score and lives at the top of the screen
@@ -458,14 +494,30 @@ class FroggerGame(arcade.View):
 #________________________________________________________-
         self.player_sprite.on_lily_pad = False 
         # Check for collisions with lily pads first
-        for lily_pad in self.lilypad_list:
-            if arcade.check_for_collision(self.player_sprite, lily_pad):
-                self.player_sprite.on_lily_pad = True
+        boundary_collision = False
+        for boundary in self.boundary_list:
+            if arcade.check_for_collision(self.player_sprite, boundary):
+                boundary_collision = True
+        if boundary_collision:
+            print("collision")
+            self.lives -= 1
+            self.timer = 60
+            if self.lives <= 0:
+                # make frog disappear when game over
+                self.player_sprite.scale = 0
+            else:
+                # reset to start if collision and lives remaining
+                self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
+                self.player_sprite.angle = 0
+        else:
+            for lily_pad in self.lilypad_list:
+                if arcade.check_for_collision(self.player_sprite, lily_pad):
+                    self.player_sprite.on_lily_pad = True
 
-                self.player_sprite.center_x = lily_pad.center_x - 17  
-                self.player_sprite.center_y = lily_pad.center_y + 15
-                self.player_sprite.angle = 180  #
-                break  
+                    self.player_sprite.center_x = lily_pad.center_x 
+                    self.player_sprite.center_y = lily_pad.center_y
+                    self.player_sprite.angle = 180  #
+                    break  
     #____________________________________________
 
         self.player_list.update()
@@ -500,8 +552,8 @@ class FroggerGame(arcade.View):
                 self.player_sprite.left += log.logSpeed
                 frog_on_log = True
 
-        lake_area_bottom = SCREEN_HEIGHT - 400
-        lake_area_top = SCREEN_HEIGHT - 70
+        lake_area_bottom = LANE_SIZE * 8
+        lake_area_top = LANE_SIZE * 13
 
         # check if player is in the lake area and not on a log
        # check if player is in the lake area and not on a log or lily pad
