@@ -446,7 +446,7 @@ class FroggerGame(arcade.View):
         # self.log_list.draw_hit_boxes()
         self.animated_log_list.draw()
         self.player_list.draw()
-        self.player_list.draw_hit_boxes(color=arcade.color.RAZZMIC_BERRY)
+        #self.player_list.draw_hit_boxes(color=arcade.color.RAZZMIC_BERRY)
 
         ### --------LIZ: draw lily pad sprites-------
         self.lilypad_list.draw()
@@ -455,8 +455,8 @@ class FroggerGame(arcade.View):
 
         self.car_list.draw()
         self.boundary_list.draw()
-        self.boundary_list.draw_hit_boxes(color=arcade.color.RED)
-        self.lilypad_list.draw_hit_boxes(color=arcade.color.RED)
+        #self.boundary_list.draw_hit_boxes(color=arcade.color.RED)
+        #self.lilypad_list.draw_hit_boxes(color=arcade.color.RED)
 
 
         # draw the score and lives at the top of the screen
@@ -526,21 +526,20 @@ class FroggerGame(arcade.View):
             for lily_pad in self.lilypad_list:
                 if arcade.check_for_collision(self.player_sprite, lily_pad):
                     self.player_sprite.on_lily_pad = True
-
                     self.player_sprite.center_x = lily_pad.center_x
                     self.player_sprite.center_y = lily_pad.center_y
                     self.player_sprite.angle = 180  #
-                    break
-    #____________________________________________
-
-                #if self.player_sprite.lily_pad_timer >= 0.5:
-                 #   self.lily_pads_gotten += 1
-                 #   self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
-                 #   self.player_sprite.angle = 0
-                 #   self.max_y_position = 0
-                 #   self.timer = 60
-                 #   self.score += 100
-                 #   self.player_sprite.lily_pad_timer = 0
+                    self.player_sprite.lily_pad_timer += delta_time
+                    # if the player has been on the lily pad for 0.5 seconds,
+                    # they have successfully gotten the lily pad
+                    if self.player_sprite.lily_pad_timer >= 0.5:
+                     self.lily_pads_gotten += 1
+                     self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
+                     self.player_sprite.angle = 0
+                     self.max_y_position = 0
+                     self.timer = 60
+                     self.score += 100
+                     self.player_sprite.lily_pad_timer = 0
 
         # check for collision with cars
         for car in self.car_list:
