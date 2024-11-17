@@ -30,6 +30,8 @@ class UserFrog(arcade.Sprite):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.on_lily_pad = False
+        self.lily_pad_timer = 0
+
     ##________________________________________________________
     def update(self):
         """ Ensure the player stays within bounds. """
@@ -44,13 +46,6 @@ class UserFrog(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 100
 
 
-     
-
-
-
-
-
-
 class Logs(arcade.Sprite): #lowest  logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
@@ -59,6 +54,7 @@ class Logs(arcade.Sprite): #lowest  logs
     #I don't think I need this
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
+
     def update(self):
         self.left += self.logSpeed
         #This resets the pattern
@@ -76,18 +72,22 @@ class Logs2(arcade.Sprite): # middle logs
         
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
+
     def update(self):
         self.left += self.logSpeed
         #resets logs for pattern
         if self.left >= SCREEN_WIDTH:
             self.right = -3 * 146
 
+
 class Logs3(arcade.Sprite): # highest logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
+
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
+
     def update(self):
         self.left += self.logSpeed
         #resets logs for pattern
@@ -95,18 +95,21 @@ class Logs3(arcade.Sprite): # highest logs
             self.right = -194
 
 
-
 class LowerTurtles(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
+
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
+
     def update(self):
         self.left += self.logSpeed
         #resets turtles for pattern
         if self.right <= 0:
             self.right = SCREEN_WIDTH + LANE_SIZE * 8
+
+
 
 class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
@@ -114,8 +117,10 @@ class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
         self.logSpeed = logSpeed
         self.texture = arcade.load_texture("Turtles.png") #starts as full turtles
         self.update_counter = 0 #tracks Turtle animation
+
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
+
     def update(self):
         self.left += self.logSpeed
         #Loop of turtle Animation
@@ -141,16 +146,22 @@ class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
         if self.update_counter > turtle_loop_speed * 6:
             self.update_counter = 0  #restart turtle loop
 
+
+
 class UpperTurtles(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
+
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
+
     def update(self):
         self.left += self.logSpeed
         if self.right <= 0:
             self.right = SCREEN_WIDTH + LANE_SIZE * 8
+
+
 
 class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
@@ -158,8 +169,10 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
         self.logSpeed = logSpeed
         self.texture = arcade.load_texture("TwoTurtles.png")
         self.update_counter = 0 #tracks Turtle animation
+
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
+
     def update(self):
         self.left += self.logSpeed
         #Loop of turtle Animation
@@ -186,16 +199,14 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
             self.update_counter = 0  #restart turtle loop
 
 
-### -------------LIZ: add lily pad class-------------------------------------------
 class LilyPad(arcade.Sprite): 
    def __init__(self, filename=None, scale=1, center_x=0, center_y=0):
        super().__init__(filename, scale)
        self.center_x = center_x
        self.center_y = center_y
-### -------------LIZ: add lily pad class-------------------------------
 
-
-
+#----------------------
+# Main game class
 class FroggerGame(arcade.View):
     def __init__(self):
         """ Initializer """
@@ -205,23 +216,20 @@ class FroggerGame(arcade.View):
         self.player_list = None
         self.background = None
         self.log_list = None
-
-        ### --------------LIZ: add lily pad list---------------------
         self.lilypad_list = None
-        ### --------------LIZ: add lily pad list---------------------
-
         self.animated_log_list = None
         self.car_list = None
-
 
         # set up the player info
         self.player_sprite = None
 
-        # default score, lives, game over, timer
+        # default score, lives, game over, game won, timer, lily pads gotten
         self.score = 0
         self.lives = 3
         self.game_over = False
+        self.game_won = False
         self.timer = 60
+        self.lily_pads_gotten = 0
 
         # track y position for score
         self.max_y_position = 0
@@ -229,20 +237,12 @@ class FroggerGame(arcade.View):
     def setup(self):
         """ Set up the game and initialize the variables. """
 
-        
         # sprite lists
         self.player_list = arcade.SpriteList()
         self.log_list = arcade.SpriteList()
-        ### --------------LIZ: add lily pad list---------------------
-        self.lilypad_list = arcade.SpriteList()
-        ### --------------LIZ: add lily pad list---------------------
-
-        # sprite lists
-        self.player_list = arcade.SpriteList()
-        self.log_list = arcade.SpriteList()  #list of logs (TURTLES ARE CONSIDERED LOGS)
-        self.animated_log_list = arcade.SpriteList()  #list of animated logs (turtles)
+        self.animated_log_list = arcade.SpriteList()
         self.car_list = arcade.SpriteList()
-
+        self.lilypad_list = arcade.SpriteList()
 
         # load frogger grid
         self.background = arcade.load_texture("assets/froggerGrid.png")
@@ -273,7 +273,8 @@ class FroggerGame(arcade.View):
             car = Car(car_sprite, car_speed = 2 + i * 0.5, direction = 1 if i % 2 == 0 else -1)
             car.center_x = i * 100
             car.bottom = LANE_SIZE * lane
-            car.height *= 0.9
+            car.scale *= 0.85
+            car.width *= 1.1
             self.car_list.append(car)
 
         #create log sprites--------------------------------------------
@@ -383,7 +384,7 @@ class FroggerGame(arcade.View):
            lily_pad.center_x, lily_pad.center_y = position
            self.lilypad_list.append(lily_pad) 
     #-------------- lily pads-------------------------------------
-         
+
     def on_draw(self):
         """ Render the screen. """
         self.clear()
@@ -416,39 +417,58 @@ class FroggerGame(arcade.View):
                              arcade.color.WHITE, font_size=40, anchor_x="center")
             arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
                              arcade.color.WHITE, font_size=20, anchor_x="center")
-
+        # draw game won text and remove frog, otherwise draw frog as usual
+        elif self.game_won:
+            arcade.draw_text("You won!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
+                             arcade.color.WHITE, font_size=40, anchor_x="center")
+            arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
+                             arcade.color.WHITE, font_size=20, anchor_x="center")
         else:
             self.player_list.draw()
 
     def on_update(self, delta_time):
         """ Movement and game logic """
+        # Don't update anything if the game is over
         if self.game_over:
             return
 
+        # Don't update anything if the game is won
+        if self.game_won:
+            return
+
+        # Check if the player has run out of lives
         if self.lives <= 0:
             self.game_over = True
 
+        # Check if the player has collected all the lily pads
+        if self.lily_pads_gotten == 5:
+            self.game_won = True
+
+        # Decrease lives if timer hits 0
         self.timer -= delta_time
         if self.timer <= 0:
             self.lives -= 1
             self.timer = 60
 
 
-#________________________________________________________-
         self.player_sprite.on_lily_pad = False 
         # Check for collisions with lily pads first
         for lily_pad in self.lilypad_list:
             if arcade.check_for_collision(self.player_sprite, lily_pad):
                 self.player_sprite.on_lily_pad = True
-
-                self.player_sprite.center_x = lily_pad.center_x - 17  
+                self.player_sprite.lily_pad_timer += delta_time
+                self.player_sprite.center_x = lily_pad.center_x - 17
                 self.player_sprite.center_y = lily_pad.center_y + 15
                 self.player_sprite.angle = 180  #
-                break  
-    #____________________________________________
 
-        self.player_list.update()
-        self.car_list.update()
+                if self.player_sprite.lily_pad_timer >= 0.5:
+                    self.lily_pads_gotten += 1
+                    self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
+                    self.player_sprite.angle = 0
+                    self.max_y_position = 0
+                    self.timer = 60
+                    self.score += 100
+                    self.player_sprite.lily_pad_timer = 0
 
         # check for collision with cars
         for car in self.car_list:
@@ -462,6 +482,9 @@ class FroggerGame(arcade.View):
                     # reset to start if collision and lives remaining
                     self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
                     self.player_sprite.angle = 0
+
+        self.player_list.update()
+        self.car_list.update()
 
 
         # check for collision with logs
@@ -482,19 +505,15 @@ class FroggerGame(arcade.View):
         lake_area_bottom = SCREEN_HEIGHT - 400
         lake_area_top = SCREEN_HEIGHT - 70
 
-        # check if player is in the lake area and not on a log
-       # check if player is in the lake area and not on a log or lily pad
+        # check if player is in the lake area and not on a log or lily pad
         if lake_area_bottom <= self.player_sprite.center_y <= lake_area_top and not frog_on_log and not self.player_sprite.on_lily_pad:
-    # Reset frog to starting position and decrease life count
+            # Reset frog to starting position and decrease life count
             self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
             self.player_sprite.angle = 0
             self.lives -= 1
             self.timer = 60
 
             self.player_sprite.on_lily_pad = False
-
-
-
 
         self.log_list.update()
         self.animated_log_list.update()
