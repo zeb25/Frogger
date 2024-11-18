@@ -1,6 +1,7 @@
 #TODO: clean up some of the numbers to have names
 import arcade
 from car import Car
+from logSpritesIncludingTurtles import Logs, Logs2, Logs3, LowerTurtles, LowerTurtlesAnimated, UpperTurtles, UpperTurtlesAnimated
 from frogger_config import MOVEMENT_DISTANCE, LANE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
 
 
@@ -46,7 +47,7 @@ class UserFrog(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 100
 
 
-class Logs(arcade.Sprite): #lowest  logs
+'''class Logs(arcade.Sprite): #lowest  logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
@@ -196,7 +197,7 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
         elif self.update_counter < turtle_loop_speed * 6:
             self.texture = arcade.load_texture("assets/TwoTurtlesRising.png") #Turtles rising
         if self.update_counter > turtle_loop_speed * 6:
-            self.update_counter = 0  #restart turtle loop
+            self.update_counter = 0  #restart turtle loop'''
 
 
 class LilyPad(arcade.Sprite): 
