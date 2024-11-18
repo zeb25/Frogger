@@ -3,26 +3,100 @@ import arcade
 from car import Car
 from frogger_config import MOVEMENT_DISTANCE, LANE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
 
+# TODO: replace these with actual top scoring
+top_scores = [3000, 2000, 1500]
+
+arcade.load_font("fonts/ARCADE_N.TTF")  # Load a .ttf font file
 
 class MenuView(arcade.View):
     """ Class that manages the 'menu' view. """
 
     def on_show_view(self):
         """ Called when switching to this view"""
-        arcade.set_background_color(arcade.color.AMAZON)
+        arcade.set_background_color(arcade.color.NAVY_BLUE)
 
     def on_draw(self):
         """ Draw the menu """
         self.clear()
-        arcade.draw_text("Press S to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
-                         arcade.color.BLACK, font_size=30, anchor_x="center")
+
+        # Draw the game title with a shadow effect
+        arcade.draw_text(
+            "FROGGER",
+            self.window.width / 2,
+            self.window.height - 100,
+            arcade.color.LIME_GREEN,
+            font_size=60,
+            anchor_x="center",
+            font_name="Arcade Normal"
+        )
+        # Add a shadow for the title
+        arcade.draw_text(
+            "FROGGER",
+            (self.window.width / 2) + 5,  # Slight offset for shadow
+            (self.window.height - 100) - 2,
+            arcade.color.GREEN,
+            font_size=60,
+            anchor_x="center",
+            font_name="Arcade Normal"
+        )
+
+        arcade.draw_text(" -POINT TABLE- ", self.window.width / 2, self.window.height - 250,
+                         arcade.color.AZURE_MIST, font_size=20, anchor_x="center", font_name="Arcade Normal")
+        arcade.draw_text("10 PTS FOR EACH STEP", self.window.width / 2, self.window.height - 300,
+                         arcade.color.AUREOLIN, font_size=12, anchor_x="center", font_name="Arcade Normal")
+        arcade.draw_text("50 PTS FOR EVERY FROG ON A LILY PAD", self.window.width / 2, self.window.height - 350,
+                         arcade.color.AUREOLIN, font_size=12, anchor_x="center", font_name="Arcade Normal")
+
+        arcade.draw_text("PRESS \"I\" FOR INSTRUCTIONS", self.window.width / 2, self.window.height / 2 - 75,
+                         arcade.color.AZURE_MIST, font_size=18, anchor_x="center", font_name="Arcade Normal")
+
+        arcade.draw_text("PRESS \"P\" TO PLAY", self.window.width / 2, self.window.height / 2 - 130,
+                         arcade.color.AZURE_MIST, font_size=18, anchor_x="center", font_name="Arcade Normal")
+        arcade.draw_text(" -TOP SCORES- ", self.window.width / 2, self.window.height / 2 - 200,
+                         arcade.color.AUREOLIN, font_size=20, anchor_x="center", font_name="Arcade Normal")
+        for index, score in enumerate(top_scores):
+            arcade.draw_text(f"{index + 1}. {score}", self.window.width / 2, self.window.height / 2 - 240 - (index * 30),
+                             arcade.color.AZURE_MIST, font_size=20, anchor_x="center", font_name="Arcade Normal")
+
 
     def on_key_press(self, key, _modifiers):
         """ Use a key press to advance to the 'game' view. """
-        if key == arcade.key.S:  # Detect "S" key press to start the game
+        if key == arcade.key.P:  # Detect "P" key press to play the game
             frogger_game = FroggerGame()
             frogger_game.setup()
             self.window.show_view(frogger_game)
+
+        if key == arcade.key.I:
+            instruction_view = InstructionView()
+            self.window.show_view(instruction_view)
+
+class InstructionView(arcade.View):
+    """ Class that manages the 'instruction' view. """
+    def on_show_view(self):
+        """ Called when switching to this view"""
+        arcade.set_background_color(arcade.color.DARK_GREEN)
+
+    def on_draw(self):
+        """ Draw the instruction screen """
+        self.clear()
+
+        arcade.draw_text(" -HOW TO PLAY- ", self.window.width / 2, self.window.height - 250,
+                         arcade.color.AZURE_MIST, font_size=20, anchor_x="center", font_name="Arcade Normal")
+        arcade.draw_text("Use the arrow keys to move the frog", self.window.width / 2, self.window.height - 300,
+                         arcade.color.AUREOLIN, font_size=10, anchor_x="center", font_name="Arcade Normal")
+        arcade.draw_text("Avoid cars and reach the lily pads safely", self.window.width / 2, self.window.height - 350,
+                         arcade.color.AUREOLIN, font_size=10, anchor_x="center", font_name="Arcade Normal")
+
+        # Instruction to return to the menu
+        arcade.draw_text(
+            "Press \"ESC\" to return to the main menu", self.window.width / 2, self.window.height - 400,
+            arcade.color.AZURE_MIST, font_size=12, anchor_x="center", font_name="Arcade Normal")
+
+    def on_key_press(self, key, _modifiers):
+        """ Use a key press to get back to the start screen"""
+        if key == arcade.key.ESCAPE:
+            menu_view = MenuView()
+            self.window.show_view(menu_view)
 
 
 class UserFrog(arcade.Sprite):
@@ -42,13 +116,6 @@ class UserFrog(arcade.Sprite):
             self.bottom = 0
         elif self.top > SCREEN_HEIGHT - 100:
             self.top = SCREEN_HEIGHT - 100
-
-
-     
-
-
-
-
 
 
 class Logs(arcade.Sprite): #lowest  logs
@@ -412,11 +479,12 @@ class FroggerGame(arcade.View):
 
         # draw game over text and remove frog, otherwise draw frog as usual
         if self.game_over:
-            arcade.draw_text("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
-                             arcade.color.WHITE, font_size=40, anchor_x="center")
-            arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
-                             arcade.color.WHITE, font_size=20, anchor_x="center")
-
+            arcade.draw_text("GAME OVER", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
+                             arcade.color.WHITE, font_size=40, anchor_x="center", font_name="Arcade Normal")
+            arcade.draw_text("PRESS \"ENTER\" TO REPLAY", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
+                             arcade.color.WHITE, font_size=10, anchor_x="center", font_name="Arcade Normal")
+            arcade.draw_text("PRESS \"ESCAPE\" TO RETURN TO THE MENU", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 40,
+                             arcade.color.WHITE, font_size=10, anchor_x="center", font_name="Arcade Normal")
         else:
             self.player_list.draw()
 
@@ -433,9 +501,7 @@ class FroggerGame(arcade.View):
             self.lives -= 1
             self.timer = 60
 
-
-#________________________________________________________-
-        self.player_sprite.on_lily_pad = False 
+        self.player_sprite.on_lily_pad = False
         # Check for collisions with lily pads first
         for lily_pad in self.lilypad_list:
             if arcade.check_for_collision(self.player_sprite, lily_pad):
@@ -493,15 +559,14 @@ class FroggerGame(arcade.View):
 
             self.player_sprite.on_lily_pad = False
 
-
-
-
         self.log_list.update()
         self.animated_log_list.update()
 
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
+
+        # restart Frogger game if ENTER key is pressed
         if self.game_over and key == arcade.key.ENTER:
             frogger_game = FroggerGame()
             frogger_game.setup()
@@ -517,7 +582,6 @@ class FroggerGame(arcade.View):
             if new_y > self.max_y_position:
                 self.score += 10
                 self.max_y_position = new_y
-
         elif key == arcade.key.DOWN:
             self.player_sprite.center_y -= MOVEMENT_DISTANCE
             # rotate png down
@@ -531,9 +595,11 @@ class FroggerGame(arcade.View):
             # rotate png right
             self.player_sprite.angle = 270
 
-        # TODO: escape key brings player back to start menu or a pause screen
-        # if key == arcade.key.ESCAPE:
-
+        # ESCAPE key brings player back to start menu
+        if key == arcade.key.ESCAPE:
+            show_menu = MenuView()
+            self.window.show_view(show_menu)
+            arcade.run()
 
 def main():
     """ Main function """
