@@ -112,7 +112,7 @@ class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
-        self.texture = arcade.load_texture("Turtles.png") #starts as full turtles
+        self.texture = arcade.load_texture("assets/Turtles.png") #starts as full turtles
         self.update_counter = 0 #tracks Turtle animation
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
@@ -124,20 +124,20 @@ class LowerTurtlesAnimated(arcade.Sprite): #lowest turtle
         if self.right <= 0:
             self.right = SCREEN_WIDTH + LANE_SIZE * 8
         if self.update_counter < turtle_loop_speed:
-            self.texture = arcade.load_texture("Turtles.png") #Regular turtles
+            self.texture = arcade.load_texture("assets/Turtles.png") #Regular turtles
         elif self.update_counter < turtle_loop_speed * 2:
-            self.texture = arcade.load_texture("TurtlesTucking1.png") #turtles start sinking
+            self.texture = arcade.load_texture("assets/TurtlesTucking1.png") #turtles start sinking
         elif self.update_counter < turtle_loop_speed * 3:
-            self.texture = arcade.load_texture("TurtlesTucking2.png") #turtles sink farther
+            self.texture = arcade.load_texture("assets/TurtlesTucking2.png") #turtles sink farther
         elif self.update_counter < turtle_loop_speed *4:
-            self.texture = arcade.load_texture("TurtlesTucking3.png")  #turtles almost gone
+            self.texture = arcade.load_texture("assets/TurtlesTucking3.png")  #turtles almost gone
         elif self.update_counter == turtle_loop_speed * 4:
             self.visible = False  #Turtles Have gone under
-            #self.texture = arcade.load_texture("Water.png")
+            #self.texture = arcade.load_texture("assets/Water.png")
         elif self.update_counter == turtle_loop_speed * 5:
             self.visible = True  #resets to showing turtle sprites
         elif self.update_counter < turtle_loop_speed * 6:
-            self.texture = arcade.load_texture("TurtlesRising.png") #Turtles rising
+            self.texture = arcade.load_texture("assets/TurtlesRising.png") #Turtles rising
         if self.update_counter > turtle_loop_speed * 6:
             self.update_counter = 0  #restart turtle loop
 
@@ -156,7 +156,7 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
         self.logSpeed = logSpeed
-        self.texture = arcade.load_texture("TwoTurtles.png")
+        self.texture = arcade.load_texture("assets/TwoTurtles.png")
         self.update_counter = 0 #tracks Turtle animation
     def setLogSpeed(self, logSpeed):
         self.logSpeed = logSpeed
@@ -168,20 +168,20 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
         if self.right <= 0:
             self.right = SCREEN_WIDTH + LANE_SIZE * 8
         if self.update_counter < turtle_loop_speed:
-            self.texture = arcade.load_texture("TwoTurtles.png") #Regular turtles
+            self.texture = arcade.load_texture("assets/TwoTurtles.png") #Regular turtles
         elif self.update_counter < turtle_loop_speed * 2:
-            self.texture = arcade.load_texture("TwoTurtlesTucking1.png") #turtles start sinking
+            self.texture = arcade.load_texture("assets/TwoTurtlesTucking1.png") #turtles start sinking
         elif self.update_counter < turtle_loop_speed * 3:
-            self.texture = arcade.load_texture("TwoTurtlesTucking2.png") #turtles sink farther
+            self.texture = arcade.load_texture("assets/TwoTurtlesTucking2.png") #turtles sink farther
         elif self.update_counter < turtle_loop_speed *4:
-            self.texture = arcade.load_texture("TwoTurtlesTucking3.png")  #turtles almost gone
+            self.texture = arcade.load_texture("assets/TwoTurtlesTucking3.png")  #turtles almost gone
         elif self.update_counter == turtle_loop_speed * 4:
             self.visible = False  #Turtles Have gone under
-            #self.texture = arcade.load_texture("Water.png")
+            #self.texture = arcade.load_texture("assets/Water.png")
         elif self.update_counter == turtle_loop_speed * 5:
             self.visible = True  #resets to showing turtle sprites
         elif self.update_counter < turtle_loop_speed * 6:
-            self.texture = arcade.load_texture("TwoTurtlesRising.png") #Turtles rising
+            self.texture = arcade.load_texture("assets/TwoTurtlesRising.png") #Turtles rising
         if self.update_counter > turtle_loop_speed * 6:
             self.update_counter = 0  #restart turtle loop
 
@@ -280,11 +280,11 @@ class FroggerGame(arcade.View):
 
         #create log sprites--------------------------------------------
         #log_source = "Log (1).png"
-        log_source = "SmallLogFinal.png"
-        log_source2 = "BigLogFinal.png"
-        log_source3 = "MediumLogFinal2.png"
-        turtle_source1 = "Turtles.png"
-        turtle_source2 = "TwoTurtles.png"
+        log_source = "assets/SmallLogFinal.png"
+        log_source2 = "assets/BigLogFinal.png"
+        log_source3 = "assets/MediumLogFinal2.png"
+        turtle_source1 = "assets/Turtles.png"
+        turtle_source2 = "assets/TwoTurtles.png"
         log_length = 146
         #lane 1*************************************
         self.log_sprite = Logs(log_source, logSpeed=2) #creates log of the first variety
@@ -414,7 +414,7 @@ class FroggerGame(arcade.View):
         self.boundary_list.append(self.boundary_sprite)
         #end of upper boundary sprite----------------------------------------------------------------
 
-        lilypad_source = "lily-pad3.png"
+        lilypad_source = "assets/lily-pad3.png"
     
         # x and y coordinates for the lily pads
         lily_pad_positions = [
