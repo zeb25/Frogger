@@ -273,10 +273,10 @@ class FroggerGame(arcade.View):
 
         # draw sprites:
         self.log_list.draw()
-        # self.log_list.draw_hit_boxes()
+        # self.log_list.draw_hit_boxes() #Comment in to show hitboxes
         self.animated_log_list.draw()
         self.player_list.draw()
-        #self.player_list.draw_hit_boxes(color=arcade.color.RAZZMIC_BERRY)
+        #self.player_list.draw_hit_boxes(color=arcade.color.RAZZMIC_BERRY) #Comment in to show hitboxes
 
         ### --------LIZ: draw lily pad sprites-------
         self.lilypad_list.draw()
@@ -285,8 +285,8 @@ class FroggerGame(arcade.View):
 
         self.car_list.draw()
         self.boundary_list.draw()
-        #self.boundary_list.draw_hit_boxes(color=arcade.color.RED)
-        #self.lilypad_list.draw_hit_boxes(color=arcade.color.RED)
+        #self.boundary_list.draw_hit_boxes(color=arcade.color.RED) #Comment in to show hitboxes
+        #self.lilypad_list.draw_hit_boxes(color=arcade.color.RED) #Comment in to show hitboxes
 
 
         # draw the score and lives at the top of the screen
@@ -342,7 +342,7 @@ class FroggerGame(arcade.View):
             if arcade.check_for_collision(self.player_sprite, boundary):
                 boundary_collision = True
         if boundary_collision:
-            print("collision")
+            #print("collision") #comment in to print collisions with upper boundary
             self.lives -= 1
             self.timer = 60
             if self.lives <= 0:
