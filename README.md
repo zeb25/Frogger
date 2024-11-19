@@ -12,4 +12,5 @@ This project is a recreation of the classic arcade game Frogger. The objective i
 
 ## Creators
 Created by David Poulin, Wade Bradford, Elizabeth Manero, and Zoe Bell
+
 Project Link: https://github.com/zeb25/Final-Project
