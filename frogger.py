@@ -62,7 +62,7 @@ class MenuView(arcade.View):
 
     def on_key_press(self, key, _modifiers):
         """ Use a key press to advance to the 'game' view. """
-        if key == arcade.key.S:  # Detect "S" key press to start the game
+        if key == arcade.key.P:
             frogger_game = FroggerGame()
             frogger_game.setup()
             self.window.show_view(frogger_game)
@@ -349,7 +349,6 @@ class FroggerGame(arcade.View):
         self.log_list.draw()
         # self.log_list.draw_hit_boxes() #Comment in to show hitboxes
         self.animated_log_list.draw()
-        self.player_list.draw()
         #self.player_list.draw_hit_boxes(color=arcade.color.RAZZMIC_BERRY) #Comment in to show hitboxes
 
         ### --------LIZ: draw lily pad sprites-------
