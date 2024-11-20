@@ -93,3 +93,31 @@ class InstructionView(arcade.View):
         if key == arcade.key.ESCAPE:
             menu_view = MenuView()
             self.window.show_view(menu_view)
+
+class GameOverView(arcade.View):
+    """ Display for when the game is over """
+    def on_show_view(self):
+        """ Called when switching to this view"""
+        arcade.set_background_color(arcade.color.DARK_GREEN)
+
+    def on_draw(self):
+        """ Draw the instruction screen """
+        from frogger_config import SCREEN_WIDTH, SCREEN_HEIGHT
+        self.clear()
+
+        arcade.draw_text("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
+                         arcade.color.WHITE, font_size=40, anchor_x="center", font_name="Arcade Normal")
+        arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
+                         arcade.color.WHITE, font_size=20, anchor_x="center", font_name="Arcade Normal")
+    def on_key_press(self, key, _modifiers):
+        # Go back to the main menu if the ESC key is pressed
+        if key == arcade.key.ESCAPE:
+            menu_view = MenuView()
+            self.window.show_view(menu_view)
+
+        # restart Frogger game if ENTER key is pressed
+        if self.game_over and key == arcade.key.ENTER:
+            from frogger import FroggerGame
+            frogger_game = FroggerGame()
+            frogger_game.setup()
+            self.window.show_view(frogger_game)

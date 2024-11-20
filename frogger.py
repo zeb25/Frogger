@@ -3,7 +3,7 @@ import arcade
 from car import Car
 from sprites import UserFrog, Logs, Logs2, Logs3, LowerTurtles, LowerTurtlesAnimated, UpperTurtles, UpperTurtlesAnimated, LilyPad
 from frogger_config import MOVEMENT_DISTANCE, LANE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
-from views import MenuView, InstructionView
+from views import MenuView, InstructionView, GameOverView
 
 # Main game class
 class FroggerGame(arcade.View):
@@ -56,8 +56,6 @@ class FroggerGame(arcade.View):
         sprite_width = self.player_sprite.width
         sprite_height = self.player_sprite.height
 
-        
-
         # scaling player sprite
         scale_x = MOVEMENT_DISTANCE / sprite_width
         scale_y = MOVEMENT_DISTANCE / sprite_height
@@ -71,8 +69,10 @@ class FroggerGame(arcade.View):
         # create car sprites
         car_sprites = ["assets/car1.png", "assets/car2flipped.png", "assets/car3.png",
                        "assets/car4flipped.png", "assets/car5.png"]
+
         # Starting from lane 2 (if spawn is lane 0)
         lane_start = 2
+
         # create each car and add it to car_list
         for i, car_sprite in enumerate(car_sprites):
             lane = lane_start + i
@@ -248,10 +248,14 @@ class FroggerGame(arcade.View):
 
         # draw game over text and remove frog, otherwise draw frog as usual
         if self.game_over:
+            # view = GameOverView()
+            # self.window.show_view(view)
+
             arcade.draw_text("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
-                             arcade.color.WHITE, font_size=40, anchor_x="center")
+                             arcade.color.WHITE, font_size=40, anchor_x="center", font_name="Arcade Normal")
             arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
-                             arcade.color.WHITE, font_size=20, anchor_x="center")
+                             arcade.color.WHITE, font_size=20, anchor_x="center", font_name="Arcade Normal")
+
         # draw game won text and remove frog, otherwise draw frog as usual
         elif self.game_won:
             arcade.draw_text("You won!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
@@ -386,11 +390,12 @@ class FroggerGame(arcade.View):
 
         # restart Frogger game if ENTER key is pressed
         if self.game_over and key == arcade.key.ENTER:
+            from frogger import FroggerGame
             frogger_game = FroggerGame()
             frogger_game.setup()
             self.window.show_view(frogger_game)
 
-        if key == arcade.key.UP:
+        if key == arcade.key.UP and not self.game_over:
             new_y = self.player_sprite.center_y + MOVEMENT_DISTANCE
             self.player_sprite.center_y = new_y
             # rotate png up
@@ -400,15 +405,15 @@ class FroggerGame(arcade.View):
             if new_y > self.max_y_position:
                 self.score += 10
                 self.max_y_position = new_y
-        elif key == arcade.key.DOWN:
+        elif key == arcade.key.DOWN and not self.game_over:
             self.player_sprite.center_y -= MOVEMENT_DISTANCE
             # rotate png down
             self.player_sprite.angle = 180
-        elif key == arcade.key.LEFT:
+        elif key == arcade.key.LEFT and not self.game_over:
             self.player_sprite.center_x -= MOVEMENT_DISTANCE
             # rotate png left
             self.player_sprite.angle = 90
-        elif key == arcade.key.RIGHT:
+        elif key == arcade.key.RIGHT and not self.game_over:
             self.player_sprite.center_x += MOVEMENT_DISTANCE
             # rotate png right
             self.player_sprite.angle = 270
