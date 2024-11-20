@@ -3,6 +3,14 @@
 import arcade
 from frogger_config import LANE_SIZE, SCREEN_WIDTH
 
+
+class UserFrog(arcade.Sprite):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.on_lily_pad = False
+        self.lily_pad_timer = 0
+
+
 class Logs(arcade.Sprite): #lowest  logs
     def __init__(self, filename = None, scale = 1, image_x = 0, image_y = 0, image_width = 0, image_height = 0, center_x = 0, center_y = 0, repeat_count_x = 1, repeat_count_y = 1, flipped_horizontally = False, flipped_vertically = False, flipped_diagonally = False, hit_box_algorithm = "Simple", hit_box_detail = 4.5, texture = None, angle = 0, logSpeed = 5):
         super().__init__(filename, scale, image_x, image_y, image_width, image_height, center_x, center_y, repeat_count_x, repeat_count_y, flipped_horizontally, flipped_vertically, flipped_diagonally, hit_box_algorithm, hit_box_detail, texture, angle)
@@ -159,3 +167,10 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
             self.texture = arcade.load_texture("assets/TwoTurtlesRising.png") #Turtles rising
         if self.update_counter > turtle_loop_speed * 6:
             self.update_counter = 0  #restart turtle loop
+
+
+class LilyPad(arcade.Sprite):
+   def __init__(self, filename=None, scale=1, center_x=0, center_y=0):
+       super().__init__(filename, scale)
+       self.center_x = center_x
+       self.center_y = center_y
