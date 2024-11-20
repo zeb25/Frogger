@@ -109,17 +109,6 @@ class UserFrog(arcade.Sprite):
         
 
     ##________________________________________________________
-    '''def update(self):
-        """ Ensure the player stays within bounds. """
-        if self.left < 5:
-            self.left = 5
-        elif self.right > SCREEN_WIDTH - 5:
-            self.right = SCREEN_WIDTH - 5
-
-        if self.bottom < 0:
-            self.bottom = 0
-        elif self.top > SCREEN_HEIGHT - 100:
-            self.top = SCREEN_HEIGHT - 100'''
 
 
 class LilyPad(arcade.Sprite): 
@@ -409,14 +398,20 @@ class FroggerGame(arcade.View):
             self.lives -= 1
             self.timer = 60
 
+        #Check for boundary collisions and if none check for lilypad collisions
         self.player_sprite.on_lily_pad = False
-        # Check for collisions with lily pads first
         boundary_collision = False
         for boundary in self.boundary_list:
             if arcade.check_for_collision(self.player_sprite, boundary):
                 boundary_collision = True
+        #The bounding box of the frog depends on its orientation therfore there must be wiggle room
+        BOTTOM_BOUNDARY = -10
+        LEFT_BOUNDARY = 0#-1
+        RIGHT_BOUNDARY = SCREEN_WIDTH + 4
+        if self.player_sprite.bottom < BOTTOM_BOUNDARY or self.player_sprite.left < LEFT_BOUNDARY or self.player_sprite.right > RIGHT_BOUNDARY:
+            boundary_collision = True
         if boundary_collision:
-            #print("collision") #comment in to print collisions with upper boundary
+            #print("collision") #comment in to print collisions with boundaries
             self.lives -= 1
             self.timer = 60
             if self.lives <= 0:
@@ -424,9 +419,9 @@ class FroggerGame(arcade.View):
                 self.player_sprite.scale = 0
             else:
                 # reset to start if collision and lives remaining
+                self.player_sprite.angle = 0
                 self.player_sprite.bottom = 0
                 self.player_sprite.left = 5
-                self.player_sprite.angle = 0
         else:
             for lily_pad in self.lilypad_list:
                 if arcade.check_for_collision(self.player_sprite, lily_pad):
@@ -440,9 +435,9 @@ class FroggerGame(arcade.View):
                     if self.player_sprite.lily_pad_timer >= 0.5:
                      self.lily_pads_gotten += 1
                      #self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
+                     self.player_sprite.angle = 0
                      self.player_sprite.bottom = 0
                      self.player_sprite.left = 5
-                     self.player_sprite.angle = 0
                      self.max_y_position = 0
                      self.timer = 60
                      self.score += 100
@@ -458,9 +453,9 @@ class FroggerGame(arcade.View):
                     self.player_sprite.scale = 0
                 else:
                     # reset to start if collision and lives remaining
+                    self.player_sprite.angle = 0
                     self.player_sprite.bottom = 0
                     self.player_sprite.left = 5
-                    self.player_sprite.angle = 0
 
         self.player_list.update()
         self.car_list.update()
@@ -487,9 +482,9 @@ class FroggerGame(arcade.View):
         # check if player is in the lake area and not on a log or lily pad
         if lake_area_bottom <= self.player_sprite.center_y <= lake_area_top and not frog_on_log and not self.player_sprite.on_lily_pad:
             # Reset frog to starting position and decrease life count
+            self.player_sprite.angle = 0
             self.player_sprite.bottom = 0
             self.player_sprite.left = 5
-            self.player_sprite.angle = 0
             self.lives -= 1
             self.timer = 60
 
