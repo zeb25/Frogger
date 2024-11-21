@@ -212,7 +212,8 @@ class FroggerGame(arcade.View):
            (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 4, LANE_SIZE * 14 - 40)]
         # create a lilypad sprite at each specified cooridnate
         for position in lily_pad_positions:
-           lily_pad = LilyPad(lilypad_source, 2) 
+           lily_pad = LilyPad(lilypad_source, 2)
+           #TODO: check lily_pad = arcade.Sprite(lilypad_source, 2) 
            lily_pad.center_x, lily_pad.bottom = position
            self.lilypad_list.append(lily_pad) 
     #-------------- lily pads-------------------------------------

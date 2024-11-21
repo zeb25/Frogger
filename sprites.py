@@ -1,5 +1,12 @@
-# Class for log sprites
-# Contains the three different sized logs, the two different sized turtles, and the two different sized animated turtles
+'''
+Class for sprites
+- Frog sprites
+- Cars sprites
+- Log sprites
+For Logs SpritesContains the three different sized logs, the two different sized turtles,
+ and the two different sized animated turtles
+ Also Contains the frog sprit
+'''
 import arcade
 from frogger_config import LANE_SIZE, SCREEN_WIDTH
 
@@ -172,5 +179,3 @@ class UpperTurtlesAnimated(arcade.Sprite): #lowest turtle
 class LilyPad(arcade.Sprite):
    def __init__(self, filename=None, scale=1, center_x=0, center_y=0):
        super().__init__(filename, scale)
-       self.center_x = center_x
-       self.center_y = center_y
