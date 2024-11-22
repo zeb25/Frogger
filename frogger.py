@@ -343,6 +343,8 @@ class FroggerGame(arcade.View):
                    # add score and number of lilypads reached
                    self.lily_pads_gotten += 1
                    self.score += 100
+                   self.max_y_position = 0
+                   self.timer = 60
 
 
                    # spawn a new frog sprite
