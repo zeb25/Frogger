@@ -21,7 +21,9 @@ class FroggerGame(arcade.View):
         self.lilypad_list = None
         self.animated_log_list = None
         self.car_list = None
-
+        #-----------------------------
+        self.placed_frogs = arcade.SpriteList() # stores the frogs that have collided with the lily pads
+        #---------------------------
 
         # set up the player info
         self.player_sprite = None
@@ -47,9 +49,16 @@ class FroggerGame(arcade.View):
         self.car_list = arcade.SpriteList()
         self.boundary_list = arcade.SpriteList()
         self.lilypad_list = arcade.SpriteList()
+        #------------------------------------------
+        self.placed_frogs = arcade.SpriteList()
+        #------------------------------------------
 
         # load frogger grid
         self.background = arcade.load_texture("assets/froggerGrid.png")
+        
+        #------------------------------------------
+        self.create_new_frog() # generates the frog sprite for the player
+        #------------------------------------------
 
         # set up player sprite size
         self.player_sprite = UserFrog("assets/froggerSprite.png", 1.0)
@@ -202,20 +211,19 @@ class FroggerGame(arcade.View):
         #end of upper boundary sprite----------------------------------------------------------------
 
         lilypad_source = "assets/lily-pad3.png"
-    
-        # x and y coordinates for the lily pads
+  
+       # x and y coordinates for the lily pads
         lily_pad_positions = [
-           (SMALL_GRASS + WATER / 2, LANE_SIZE * 14 - 40),
-           (SMALL_GRASS + WATER / 2 + (GRASS + WATER), LANE_SIZE * 14 - 40),
-           (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 2, LANE_SIZE * 14 - 40),
-           (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 3, LANE_SIZE * 14 - 40),
-           (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 4, LANE_SIZE * 14 - 40)]
-        # create a lilypad sprite at each specified cooridnate
-        for position in lily_pad_positions:
-           lily_pad = LilyPad(lilypad_source, 2)
-           #TODO: check lily_pad = arcade.Sprite(lilypad_source, 2) 
-           lily_pad.center_x, lily_pad.bottom = position
-           self.lilypad_list.append(lily_pad) 
+          (SMALL_GRASS + WATER / 2, LANE_SIZE * 14 - 40),
+          (SMALL_GRASS + WATER / 2 + (GRASS + WATER), LANE_SIZE * 14 - 40),
+          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 2, LANE_SIZE * 14 - 40),
+          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 3, LANE_SIZE * 14 - 40),
+          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 4, LANE_SIZE * 14 - 40)]
+       # create a lilypad sprite at each specified cooridnate
+        for position in lily_pad_positions: # loop through the defiened lilypad postions
+          lily_pad = LilyPad(lilypad_source, 2) # create new lilypad sprite
+          lily_pad.center_x, lily_pad.bottom = position # gives the x and y cooridate from the current postion
+          self.lilypad_list.append(lily_pad) # add the lilypad sprite to the list 
     #-------------- lily pads-------------------------------------
 
     def on_draw(self):
@@ -232,8 +240,9 @@ class FroggerGame(arcade.View):
         #self.player_list.draw_hit_boxes(color=arcade.color.RAZZMIC_BERRY) #Comment in to show hitboxes
 
         ### --------LIZ: draw lily pad sprites-------
-        self.lilypad_list.draw()
-        ### --------LIZ: draw lily pad sprites-------
+        self.lilypad_list.draw() # draw the lilypad sprites
+        self.placed_frogs.draw() # draw frogs that are on lily pads
+       ### --------LIZ: draw lily pad sprites-------
 
 
         self.car_list.draw()
@@ -266,6 +275,28 @@ class FroggerGame(arcade.View):
         else:
             self.player_list.draw()
 
+
+    #-------------------------------------------------------------------
+    def create_new_frog(self):
+       """ make a new player frog """
+       self.player_sprite = UserFrog("assets/froggerSprite.png", 1.0) # new frog sprite object
+       # get the width and height for the sprite
+       sprite_width = self.player_sprite.width
+       sprite_height = self.player_sprite.height
+       # scale the sprite
+       scale_x = MOVEMENT_DISTANCE / sprite_width
+       scale_y = MOVEMENT_DISTANCE / sprite_height
+       self.player_sprite.scale = min(scale_x, scale_y)
+      
+       # set the frogs postion
+       self.player_sprite.center_x = -100
+       self.player_sprite.center_y = -100
+       # add the sprite to the player list
+       self.player_list.append(self.player_sprite)
+#--------------------------------------------------------------------
+
+
+
     def on_update(self, delta_time):
         """ Movement and game logic """
         # Don't update anything if the game is over
@@ -283,6 +314,43 @@ class FroggerGame(arcade.View):
         # Check if the player has collected all the lily pads
         if self.lily_pads_gotten == 5:
             self.game_won = True
+
+        #-------------------------------------------------
+        for lily_pad in self.lilypad_list:
+           if arcade.check_for_collision(self.player_sprite, lily_pad):
+               if lily_pad.filled:
+                   # kill the frog if it tries to go on an occupied lilypad
+                   self.lives -= 1
+                   self.timer = 60
+                   if self.lives <= 0:
+                       self.game_over = True
+                   else:
+                       # reset the frog the to the starting point
+                       self.player_sprite.center_x = SCREEN_WIDTH / 2
+                       self.player_sprite.center_y = LANE_SIZE / 2
+               else:
+                   # stick the current frog permanently on the lily pad
+                   self.player_sprite.center_x = lily_pad.center_x
+                   self.player_sprite.center_y = lily_pad.center_y
+                   self.player_sprite.angle = 180
+                   self.placed_frogs.append(self.player_sprite)
+
+
+                   # Mark the lily pad as filled
+                   lily_pad.filled = True
+
+
+                   # add score and number of lilypads reached
+                   self.lily_pads_gotten += 1
+                   self.score += 100
+
+
+                   # spawn a new frog sprite
+                   self.create_new_frog()
+                   self.player_sprite.center_x = SCREEN_WIDTH / 2 
+                   self.player_sprite.center_y = LANE_SIZE / 2  
+               break
+       #-------------------------------------------------
 
         # Decrease lives if timer hits 0
         self.timer -= delta_time
@@ -389,6 +457,13 @@ class FroggerGame(arcade.View):
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
 
+        #---------------------------------------------
+        # Move the frog to the starting position
+        if self.player_sprite.center_x == -100 and self.player_sprite.center_y == -100:
+           self.player_sprite.center_x = 5
+           self.player_sprite.center_y = 0
+       #--------------------------------------
+
         # restart Frogger game if ENTER key is pressed
         if self.game_over and key == arcade.key.ENTER:
             from frogger import FroggerGame
@@ -435,5 +510,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
