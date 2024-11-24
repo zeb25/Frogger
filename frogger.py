@@ -280,6 +280,7 @@ class FroggerGame(arcade.View):
         self.timer = 60
         if self.lives <= 0:
             # make frog disappear when game over
+            self.lives = 0
             self.player_sprite.scale = 0
         else:
             # reset to start if collision and lives remaining
