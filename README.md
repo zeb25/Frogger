@@ -17,5 +17,7 @@ Project Link: https://github.com/zeb25/Final-Project
 
 ## Sources
 Frogger Sprite PNG: https://www.pngegg.com/en/search?q=frogger
+
 Background Image: https://excamera.com/sphinx/gameduino/tutorials/frogger1.html
+
 Car Sprite PNGs: https://classicgaming.cc/classics/frogger/graphics
