@@ -294,6 +294,19 @@ class FroggerGame(arcade.View):
        # add the sprite to the player list
        self.player_list.append(self.player_sprite)
 #--------------------------------------------------------------------
+    def player_death(self):
+        self.lives -= 1
+        self.timer = 60
+        if self.lives <= 0:
+            # make frog disappear when game over
+            self.player_sprite.scale = 0
+        else:
+            # reset to start if collision and lives remaining
+            self.player_sprite.angle = 0
+            #self.player_sprite.bottom = 0
+            #self.player_sprite.left = 5
+            self.player_sprite.center_x = SCREEN_WIDTH / 2 
+            self.player_sprite.center_y = LANE_SIZE / 2 
 
 
 
@@ -357,8 +370,7 @@ class FroggerGame(arcade.View):
         # Decrease lives if timer hits 0
         self.timer -= delta_time
         if self.timer <= 0:
-            self.lives -= 1
-            self.timer = 60
+            self.player_death()
 
         #Check for boundary collisions and if none check for lilypad collisions
         self.player_sprite.on_lily_pad = False
@@ -374,16 +386,7 @@ class FroggerGame(arcade.View):
             boundary_collision = True
         if boundary_collision:
             #print("collision") #comment in to print collisions with boundaries
-            self.lives -= 1
-            self.timer = 60
-            if self.lives <= 0:
-                # make frog disappear when game over
-                self.player_sprite.scale = 0
-            else:
-                # reset to start if collision and lives remaining
-                self.player_sprite.angle = 0
-                self.player_sprite.bottom = 0
-                self.player_sprite.left = 5
+            self.player_death()
         else:
             for lily_pad in self.lilypad_list:
                 if arcade.check_for_collision(self.player_sprite, lily_pad):
@@ -408,16 +411,8 @@ class FroggerGame(arcade.View):
         # check for collision with cars
         for car in self.car_list:
             if arcade.check_for_collision(self.player_sprite, car):
-                self.lives -= 1
-                self.timer = 60
-                if self.lives <= 0:
-                    # make frog disappear when game over
-                    self.player_sprite.scale = 0
-                else:
-                    # reset to start if collision and lives remaining
-                    self.player_sprite.angle = 0
-                    self.player_sprite.bottom = 0
-                    self.player_sprite.left = 5
+                self.player_death()
+
 
         self.player_list.update()
         self.car_list.update()
@@ -444,11 +439,8 @@ class FroggerGame(arcade.View):
         # check if player is in the lake area and not on a log or lily pad
         if lake_area_bottom <= self.player_sprite.center_y <= lake_area_top and not frog_on_log and not self.player_sprite.on_lily_pad:
             # Reset frog to starting position and decrease life count
-            self.player_sprite.angle = 0
-            self.player_sprite.bottom = 0
-            self.player_sprite.left = 5
-            self.lives -= 1
-            self.timer = 60
+            self.player_death()
+
 
             self.player_sprite.on_lily_pad = False
 
