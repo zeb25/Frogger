@@ -74,14 +74,14 @@ class FroggerGame(arcade.View):
         self.player_list.append(self.player_sprite)
 
         # create car sprites
-        car_sprites = ["assets/car1.png", "assets/car2flipped.png", "assets/car3.png",
+        CAR_SPRITES = ["assets/car1.png", "assets/car2flipped.png", "assets/car3.png",
                        "assets/car4flipped.png", "assets/car5.png"]
 
         # Starting from lane 2 (if spawn is lane 0)
         lane_start = 2
 
         # create each car and add it to car_list
-        for i, car_sprite in enumerate(car_sprites):
+        for i, car_sprite in enumerate(CAR_SPRITES):
             lane = lane_start + i
             car = Car(car_sprite, car_speed = 2 + i * 0.5, direction = 1 if i % 2 == 0 else -1)
             car.center_x = i * 100
@@ -92,57 +92,57 @@ class FroggerGame(arcade.View):
 
         #create log sprites--------------------------------------------
         #log_source = "Log (1).png"
-        log_source = "assets/SmallLogFinal.png"
-        log_source2 = "assets/BigLogFinal.png"
-        log_source3 = "assets/MediumLogFinal2.png"
-        turtle_source1 = "assets/Turtles.png"
-        turtle_source2 = "assets/TwoTurtles.png"
+        LOG_SOURCE = "assets/SmallLogFinal.png"
+        LOG_SOURCE2 = "assets/BigLogFinal.png"
+        LOG_SOURCE3 = "assets/MediumLogFinal2.png"
+        TURTLE_SOURCE1 = "assets/Turtles.png"
+        TURTLE_SOURCE2 = "assets/TwoTurtles.png"
         log_length = 146
         #lane 1*************************************
-        self.log_sprite = Logs(log_source, logSpeed=2) #creates log of the first variety
+        self.log_sprite = Logs(LOG_SOURCE, logSpeed=2) #creates log of the first variety
         self.log_sprite.right = 0 #xposition
         self.log_sprite.bottom = LANE_SIZE * 9 
         self.log_list.append(self.log_sprite) #add to list of sprites
-        self.log_sprite = Logs(log_source, logSpeed=2)
+        self.log_sprite = Logs(LOG_SOURCE, logSpeed=2)
         self.log_sprite.right = -log_length*2
         self.log_sprite.bottom = LANE_SIZE * 9
         self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs(log_source, logSpeed=2)
+        self.log_sprite = Logs(LOG_SOURCE, logSpeed=2)
         self.log_sprite.right = -log_length*4
         self.log_sprite.bottom = LANE_SIZE * 9
         self.log_list.append(self.log_sprite)
         #end lane 1***********************************
 
         #lane2****************************************
-        self.log_sprite = Logs2(log_source2, logSpeed=3)
+        self.log_sprite = Logs2(LOG_SOURCE2, logSpeed=3)
         self.log_sprite.right = 0
         self.log_sprite.bottom = LANE_SIZE * 10 
         self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs2(log_source2, logSpeed=3)
+        self.log_sprite = Logs2(LOG_SOURCE2, logSpeed=3)
         self.log_sprite.right = -log_length * 3
         self.log_sprite.bottom = LANE_SIZE * 10 
         self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs2(log_source2, logSpeed=3)
+        self.log_sprite = Logs2(LOG_SOURCE2, logSpeed=3)
         self.log_sprite.right = -log_length * 6
         self.log_sprite.bottom = LANE_SIZE * 10 
         self.log_list.append(self.log_sprite)
         #end Lane 2***********************************
 
         #lane3
-        self.log_sprite = Logs3(log_source3, logSpeed=2.5)
+        self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
         self.log_sprite.right = 0
         self.log_sprite.bottom = LANE_SIZE * 12 
         self.log_list.append(self.log_sprite)
 
-        self.log_sprite = Logs3(log_source3, logSpeed=2.5)
+        self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
         self.log_sprite.right = -194 - 48.5
         self.log_sprite.bottom = LANE_SIZE * 12 
         self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs3(log_source3, logSpeed=2.5)
+        self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
         self.log_sprite.right = (-194 - 48.5) * 2
         self.log_sprite.bottom = LANE_SIZE * 12 
         self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs3(log_source3, logSpeed=2.5)
+        self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
         self.log_sprite.right = (-194 - 48.5) * 3
         self.log_sprite.bottom = LANE_SIZE * 12 
         self.log_list.append(self.log_sprite)
@@ -158,7 +158,7 @@ class FroggerGame(arcade.View):
         self.animated_log_list.append(self.log_sprite)
         #Non blinking
         for i in range(1,4):
-            self.log_sprite = UpperTurtles(turtle_source2, logSpeed=-3)
+            self.log_sprite = UpperTurtles(TURTLE_SOURCE1, logSpeed=-3)
             self.log_sprite.left = SCREEN_WIDTH + (LANE_SIZE * 4) * i
             self.log_sprite.bottom = LANE_SIZE * 11 
             self.log_sprite.hit_box = [[-65, 0], [17, 0]]  #adjusts the hitbox of the turtles to be smaller
@@ -167,7 +167,7 @@ class FroggerGame(arcade.View):
         #Lower Turtles
         #Non blinking
         for i in range(4):
-            self.log_sprite = LowerTurtles(turtle_source1, logSpeed=-3)
+            self.log_sprite = LowerTurtles(TURTLE_SOURCE1, logSpeed=-3)
             self.log_sprite.left = SCREEN_WIDTH + (LANE_SIZE * 4) * i
             self.log_sprite.bottom = LANE_SIZE * 8 
             self.log_sprite.hit_box = [[-65, 0], [66, 0]]  #adjusts the hitbox of the turtles to be smaller
@@ -208,7 +208,7 @@ class FroggerGame(arcade.View):
         self.boundary_list.append(self.boundary_sprite)
         #end of upper boundary sprite----------------------------------------------------------------
 
-        lilypad_source = "assets/lily-pad3.png"
+        LILY_PAD_SOURCE = "assets/lily-pad3.png"
   
        # x and y coordinates for the lily pads
         lily_pad_positions = [
@@ -219,7 +219,7 @@ class FroggerGame(arcade.View):
           (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 4, LANE_SIZE * 14 - 40)]
        # create a lilypad sprite at each specified cooridnate
         for position in lily_pad_positions: # loop through the defiened lilypad postions
-          lily_pad = LilyPad(lilypad_source, 2) # create new lilypad sprite
+          lily_pad = LilyPad(LILY_PAD_SOURCE, 2) # create new lilypad sprite
           lily_pad.center_x, lily_pad.bottom = position # gives the x and y cooridate from the current postion
           self.lilypad_list.append(lily_pad) # add the lilypad sprite to the list 
     #-------------- lily pads-------------------------------------
