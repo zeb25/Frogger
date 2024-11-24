@@ -56,10 +56,6 @@ class FroggerGame(arcade.View):
         # load frogger grid
         self.background = arcade.load_texture("assets/froggerGrid.png")
         
-        #------------------------------------------
-        self.create_new_frog() # generates the frog sprite for the player
-        #------------------------------------------
-
         # set up player sprite size
         self.player_sprite = UserFrog("assets/froggerSprite.png", 1.0)
         sprite_width = self.player_sprite.width
@@ -71,8 +67,10 @@ class FroggerGame(arcade.View):
         self.player_sprite.scale = min(scale_x, scale_y)
 
         # set initial player sprite position
-        self.player_sprite.bottom = 0
-        self.player_sprite.left = 5
+        self.player_sprite.center_x = SCREEN_WIDTH / 2 
+        self.player_sprite.center_y = LANE_SIZE / 2
+        #self.player_sprite.bottom = 0
+        #self.player_sprite.left = 5
         self.player_list.append(self.player_sprite)
 
         # create car sprites
@@ -277,23 +275,6 @@ class FroggerGame(arcade.View):
 
 
     #-------------------------------------------------------------------
-    def create_new_frog(self):
-       """ make a new player frog """
-       self.player_sprite = UserFrog("assets/froggerSprite.png", 1.0) # new frog sprite object
-       # get the width and height for the sprite
-       sprite_width = self.player_sprite.width
-       sprite_height = self.player_sprite.height
-       # scale the sprite
-       scale_x = MOVEMENT_DISTANCE / sprite_width
-       scale_y = MOVEMENT_DISTANCE / sprite_height
-       self.player_sprite.scale = min(scale_x, scale_y)
-      
-       # set the frogs postion
-       self.player_sprite.center_x = -100
-       self.player_sprite.center_y = -100
-       # add the sprite to the player list
-       self.player_list.append(self.player_sprite)
-#--------------------------------------------------------------------
     def player_death(self):
         self.lives -= 1
         self.timer = 60
@@ -335,13 +316,18 @@ class FroggerGame(arcade.View):
                    # kill the frog if it tries to go on an occupied lilypad
                    self.player_death()
                else:
-                   # stick the current frog permanently on the lily pad
-                   self.player_sprite.center_x = lily_pad.center_x
-                   self.player_sprite.center_y = lily_pad.center_y
-                   self.player_sprite.angle = 180
-                   self.placed_frogs.append(self.player_sprite)
-
-
+                   # stick the current frog permanently on the lily pad---------
+                   self.frog_sprite = arcade.Sprite("assets/froggerSprite.png", 1.0) # new frog sprite object
+                   # scale the sprite
+                   self.frog_sprite.scale = self.player_sprite.scale
+                    
+                   # set the frogs postion
+                   self.frog_sprite.center_x = lily_pad.center_x
+                   self.frog_sprite.center_y = lily_pad.center_y
+                   self.frog_sprite.angle = 180
+                   # add the sprite to the player list
+                   self.placed_frogs.append(self.frog_sprite)
+                   #------------------
                    # Mark the lily pad as filled
                    lily_pad.filled = True
 
@@ -353,10 +339,10 @@ class FroggerGame(arcade.View):
                    self.timer = 60
 
 
-                   # spawn a new frog sprite
-                   self.create_new_frog()
+                   # Reset player position
                    self.player_sprite.center_x = SCREEN_WIDTH / 2 
                    self.player_sprite.center_y = LANE_SIZE / 2  
+                   
                break
        #-------------------------------------------------
 
