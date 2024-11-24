@@ -275,6 +275,7 @@ class FroggerGame(arcade.View):
 
 
     #-------------------------------------------------------------------
+    '''Function that lowers players lives and resets the player position and timer'''
     def player_death(self):
         self.lives -= 1
         self.timer = 60
@@ -283,10 +284,8 @@ class FroggerGame(arcade.View):
             self.lives = 0
             self.player_sprite.scale = 0
         else:
-            # reset to start if collision and lives remaining
+            #reset player position
             self.player_sprite.angle = 0
-            #self.player_sprite.bottom = 0
-            #self.player_sprite.left = 5
             self.player_sprite.center_x = SCREEN_WIDTH / 2 
             self.player_sprite.center_y = LANE_SIZE / 2 
 
