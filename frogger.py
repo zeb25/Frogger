@@ -333,14 +333,7 @@ class FroggerGame(arcade.View):
            if arcade.check_for_collision(self.player_sprite, lily_pad):
                if lily_pad.filled:
                    # kill the frog if it tries to go on an occupied lilypad
-                   self.lives -= 1
-                   self.timer = 60
-                   if self.lives <= 0:
-                       self.game_over = True
-                   else:
-                       # reset the frog the to the starting point
-                       self.player_sprite.center_x = SCREEN_WIDTH / 2
-                       self.player_sprite.center_y = LANE_SIZE / 2
+                   self.player_death()
                else:
                    # stick the current frog permanently on the lily pad
                    self.player_sprite.center_x = lily_pad.center_x
