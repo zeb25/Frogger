@@ -309,43 +309,6 @@ class FroggerGame(arcade.View):
         if self.lily_pads_gotten == 5:
             self.game_won = True
 
-        #-------------------------------------------------
-        for lily_pad in self.lilypad_list:
-           if arcade.check_for_collision(self.player_sprite, lily_pad):
-               if lily_pad.filled:
-                   # kill the frog if it tries to go on an occupied lilypad
-                   self.player_death()
-               else:
-                   # stick the current frog permanently on the lily pad---------
-                   self.frog_sprite = arcade.Sprite("assets/froggerSprite.png", 1.0) # new frog sprite object
-                   # scale the sprite
-                   self.frog_sprite.scale = self.player_sprite.scale
-                    
-                   # set the frogs postion
-                   self.frog_sprite.center_x = lily_pad.center_x
-                   self.frog_sprite.center_y = lily_pad.center_y
-                   self.frog_sprite.angle = 180
-                   # add the sprite to the player list
-                   self.placed_frogs.append(self.frog_sprite)
-                   #------------------
-                   # Mark the lily pad as filled
-                   lily_pad.filled = True
-
-
-                   # add score and number of lilypads reached
-                   self.lily_pads_gotten += 1
-                   self.score += 100
-                   self.max_y_position = 0
-                   self.timer = 60
-
-
-                   # Reset player position
-                   self.player_sprite.center_x = SCREEN_WIDTH / 2 
-                   self.player_sprite.center_y = LANE_SIZE / 2  
-                   
-               break
-       #-------------------------------------------------
-
         # Decrease lives if timer hits 0
         self.timer -= delta_time
         if self.timer <= 0:
@@ -367,7 +330,42 @@ class FroggerGame(arcade.View):
             #print("collision") #comment in to print collisions with boundaries
             self.player_death()
         else:
+            #-------------------------------------------------
             for lily_pad in self.lilypad_list:
+                if arcade.check_for_collision(self.player_sprite, lily_pad):
+                    if lily_pad.filled:
+                        # kill the frog if it tries to go on an occupied lilypad
+                        self.player_death()
+                    else:
+                        # stick the current frog permanently on the lily pad---------
+                        self.frog_sprite = arcade.Sprite("assets/froggerSprite.png", 1.0) # new frog sprite object
+                        # scale the sprite
+                        self.frog_sprite.scale = self.player_sprite.scale
+                            
+                        # set the frogs postion
+                        self.frog_sprite.center_x = lily_pad.center_x
+                        self.frog_sprite.center_y = lily_pad.center_y
+                        self.frog_sprite.angle = 180
+                        # add the sprite to the player list
+                        self.placed_frogs.append(self.frog_sprite)
+                        #------------------
+                        # Mark the lily pad as filled
+                        lily_pad.filled = True
+
+
+                        # add score and number of lilypads reached
+                        self.lily_pads_gotten += 1
+                        self.score += 100
+                        self.max_y_position = 0
+                        self.timer = 60
+
+                        # Reset player position
+                        self.player_sprite.center_x = SCREEN_WIDTH / 2 
+                        self.player_sprite.center_y = LANE_SIZE / 2  
+                   
+                #break
+       #-------------------------------------------------
+            '''for lily_pad in self.lilypad_list:
                 if arcade.check_for_collision(self.player_sprite, lily_pad):
                     self.player_sprite.on_lily_pad = True
                     self.player_sprite.center_x = lily_pad.center_x
@@ -385,7 +383,7 @@ class FroggerGame(arcade.View):
                      self.max_y_position = 0
                      self.timer = 60
                      self.score += 100
-                     self.player_sprite.lily_pad_timer = 0
+                     self.player_sprite.lily_pad_timer = 0'''
 
         # check for collision with cars
         for car in self.car_list:
