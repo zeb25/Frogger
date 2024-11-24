@@ -158,7 +158,7 @@ class FroggerGame(arcade.View):
         self.animated_log_list.append(self.log_sprite)
         #Non blinking
         for i in range(1,4):
-            self.log_sprite = UpperTurtles(TURTLE_SOURCE1, logSpeed=-3)
+            self.log_sprite = UpperTurtles(TURTLE_SOURCE2, logSpeed=-3)
             self.log_sprite.left = SCREEN_WIDTH + (LANE_SIZE * 4) * i
             self.log_sprite.bottom = LANE_SIZE * 11 
             self.log_sprite.hit_box = [[-65, 0], [17, 0]]  #adjusts the hitbox of the turtles to be smaller
