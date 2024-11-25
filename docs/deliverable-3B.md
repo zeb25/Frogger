@@ -18,9 +18,10 @@
  - **Branch**: Used Upper Boundary branch for upper boundary, organization branch for organization, and eventually main for finishing touches so that they would be visible to the whole team right away.
 
 ### Zoe:
-- 
- - **Status**:
- - **Branch**: 
+- Clean up the various screens and make visually aesthetic
+- Get top scoring to display in the menu view 
+ - **Status**: The screens are completed and all work. The high scoring is implemented, but slightly buggy. The user must press escape to exit the game and clear the csv file containing their high scores. When the file is first empty, the scores sometimes get written multiple times. Overall logic works correctly for maintaing the high scores and displaying them on the menu view. 
+ - **Branch**: Pushed changes to the main branch.
 
 Deliverable 3B
 
