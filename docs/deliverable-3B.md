@@ -1,9 +1,9 @@
 ## Sprint 3 Tasks and Results:
 
 ### Wade:
-- 
- - **Status**: 
- - **Branch**: 
+- Add game over and game won screens, time limit that causes frog death, improved commenting
+ - **Status**: Completed
+ - **Branch**: I pushed changes to branches feature/scoring-with-lily-pads and feature/game-over-and-timer.
 
 ### Liz:
 - Get the frogs to stick to the lilypad and generate a new player sprite. Also losing a life if the current player sprites if it jumps on the lilypad with the frog on it.
