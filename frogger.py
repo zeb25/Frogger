@@ -99,53 +99,31 @@ class FroggerGame(arcade.View):
         TURTLE_SOURCE2 = "assets/TwoTurtles.png"
         log_length = 146
         #lane 1*************************************
-        self.log_sprite = Logs(LOG_SOURCE, logSpeed=2) #creates log of the first variety
-        self.log_sprite.right = 0 #xposition
-        self.log_sprite.bottom = LANE_SIZE * 9 
-        self.log_list.append(self.log_sprite) #add to list of sprites
-        self.log_sprite = Logs(LOG_SOURCE, logSpeed=2)
-        self.log_sprite.right = -log_length*2
-        self.log_sprite.bottom = LANE_SIZE * 9
-        self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs(LOG_SOURCE, logSpeed=2)
-        self.log_sprite.right = -log_length*4
-        self.log_sprite.bottom = LANE_SIZE * 9
-        self.log_list.append(self.log_sprite)
+        LANE1_LOG_SPACING = -146 * 2
+        for i in range(3):
+            self.log_sprite = Logs(LOG_SOURCE, logSpeed=2)
+            self.log_sprite.right = LANE1_LOG_SPACING * i
+            self.log_sprite.bottom = LANE_SIZE * 9
+            self.log_list.append(self.log_sprite)
         #end lane 1***********************************
 
         #lane2****************************************
-        self.log_sprite = Logs2(LOG_SOURCE2, logSpeed=3)
-        self.log_sprite.right = 0
-        self.log_sprite.bottom = LANE_SIZE * 10 
-        self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs2(LOG_SOURCE2, logSpeed=3)
-        self.log_sprite.right = -log_length * 3
-        self.log_sprite.bottom = LANE_SIZE * 10 
-        self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs2(LOG_SOURCE2, logSpeed=3)
-        self.log_sprite.right = -log_length * 6
-        self.log_sprite.bottom = LANE_SIZE * 10 
-        self.log_list.append(self.log_sprite)
+        LANE1_LOG_SPACING = -146 * 3
+        for i in range(3):
+            self.log_sprite = Logs2(LOG_SOURCE2, logSpeed=3)
+            self.log_sprite.right = LANE1_LOG_SPACING * i
+            self.log_sprite.bottom = LANE_SIZE * 10 
+            self.log_list.append(self.log_sprite)
         #end Lane 2***********************************
 
-        #lane3
-        self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
-        self.log_sprite.right = 0
-        self.log_sprite.bottom = LANE_SIZE * 12 
-        self.log_list.append(self.log_sprite)
-
-        self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
-        self.log_sprite.right = -194 - 48.5
-        self.log_sprite.bottom = LANE_SIZE * 12 
-        self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
-        self.log_sprite.right = (-194 - 48.5) * 2
-        self.log_sprite.bottom = LANE_SIZE * 12 
-        self.log_list.append(self.log_sprite)
-        self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
-        self.log_sprite.right = (-194 - 48.5) * 3
-        self.log_sprite.bottom = LANE_SIZE * 12 
-        self.log_list.append(self.log_sprite)
+        #lane3******************************************
+        LANE3_LOG_SPACING = LANE_SIZE * -5
+        for i in range(4):
+            self.log_sprite = Logs3(LOG_SOURCE3, logSpeed=2.5)
+            self.log_sprite.right = LANE3_LOG_SPACING * i
+            self.log_sprite.bottom = LANE_SIZE * 12 
+            self.log_list.append(self.log_sprite)
+        #end Lane 3********************************************
         #end of log sprites---------------------------------------------
 
         #Start Turtle Sprites--------------------------------------------
@@ -157,9 +135,10 @@ class FroggerGame(arcade.View):
         self.log_sprite.hit_box = [[-65, 0], [17, 0]]  #adjusts the hitbox of the turtles to be smaller
         self.animated_log_list.append(self.log_sprite)
         #Non blinking
+        TURTLE_OFFSET = LANE_SIZE * 4
         for i in range(1,4):
             self.log_sprite = UpperTurtles(TURTLE_SOURCE2, logSpeed=-3)
-            self.log_sprite.left = SCREEN_WIDTH + (LANE_SIZE * 4) * i
+            self.log_sprite.left = SCREEN_WIDTH + TURTLE_OFFSET * i
             self.log_sprite.bottom = LANE_SIZE * 11 
             self.log_sprite.hit_box = [[-65, 0], [17, 0]]  #adjusts the hitbox of the turtles to be smaller
             self.log_list.append(self.log_sprite)
@@ -168,13 +147,13 @@ class FroggerGame(arcade.View):
         #Non blinking
         for i in range(4):
             self.log_sprite = LowerTurtles(TURTLE_SOURCE1, logSpeed=-3)
-            self.log_sprite.left = SCREEN_WIDTH + (LANE_SIZE * 4) * i
+            self.log_sprite.left = SCREEN_WIDTH + TURTLE_OFFSET * i
             self.log_sprite.bottom = LANE_SIZE * 8 
             self.log_sprite.hit_box = [[-65, 0], [66, 0]]  #adjusts the hitbox of the turtles to be smaller
             self.log_list.append(self.log_sprite)
         #Blinking
         self.log_sprite = LowerTurtlesAnimated(logSpeed=-3)
-        self.log_sprite.left = SCREEN_WIDTH + LANE_SIZE * 16
+        self.log_sprite.left = SCREEN_WIDTH + TURTLE_OFFSET * 4
         self.log_sprite.bottom = LANE_SIZE * 8 
         self.log_sprite.hit_box = [[-65, 0], [66, 0]]  #adjusts the hitbox of the turtles to be smaller
         self.animated_log_list.append(self.log_sprite)
@@ -309,7 +288,8 @@ class FroggerGame(arcade.View):
             self.game_over = True
 
         # Check if the player has collected all the lily pads
-        if self.lily_pads_gotten == 5:
+        MAX_LILY_PADS = 5 #number of lily pads
+        if self.lily_pads_gotten == MAX_LILY_PADS:
             self.game_won = True
 
         # Decrease lives if timer hits 0
