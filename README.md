@@ -9,9 +9,10 @@ This project is a recreation of the classic arcade game Frogger. The objective i
 2. Avoid cars and other obstacles when crossing the road
 3. Cross the river by jumping on logs and turtles (beware of disappearing turtles!)
 4. Reach the lily pads to win the game
+5. Beware of the clock counting down towards your demise.
 
 ## Creators
-Created by David Poulin, Wade Bradford, Elizabeth Manero, and Zoe Bell
+Created by Zoe Bell, Wade Bradford, Elizabeth Manero, and David Poulin
 
 Project Link: https://github.com/zeb25/Final-Project
 

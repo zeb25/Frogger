@@ -15,7 +15,6 @@ class UserFrog(arcade.Sprite):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.on_lily_pad = False
-        self.lily_pad_timer = 0
 
 
 
