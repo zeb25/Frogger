@@ -252,9 +252,9 @@ class FroggerGame(arcade.View):
         # draw game won text and remove frog, otherwise draw frog as usual
         elif self.game_won:
             arcade.draw_text("You won!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
-                             arcade.color.WHITE, font_size=40, anchor_x="center")
+                             arcade.color.WHITE, font_size=40, anchor_x="center", font_name="Arcade Normal")
             arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
-                             arcade.color.WHITE, font_size=20, anchor_x="center")
+                             arcade.color.WHITE, font_size=20, anchor_x="center", font_name="Arcade Normal")
         else:
             self.player_list.draw()
 
@@ -395,6 +395,13 @@ class FroggerGame(arcade.View):
         """Called whenever a key is pressed."""
         # restart Frogger game if ENTER key is pressed
         if self.game_over and key == arcade.key.ENTER:
+            from frogger import FroggerGame
+            frogger_game = FroggerGame()
+            frogger_game.setup()
+            self.window.show_view(frogger_game)
+
+        # restart Frogger game if ENTER key is pressed
+        if self.game_won and key == arcade.key.ENTER:
             from frogger import FroggerGame
             frogger_game = FroggerGame()
             frogger_game.setup()
