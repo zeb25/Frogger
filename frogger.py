@@ -263,6 +263,7 @@ class FroggerGame(arcade.View):
     '''Function that lowers players lives and resets the player position and timer'''
     def player_death(self):
         self.lives -= 1
+        #reset timer counting down to death
         self.timer = 60
         if self.lives <= 0:
             # make frog disappear when game over
@@ -308,6 +309,7 @@ class FroggerGame(arcade.View):
         for boundary in self.boundary_list:
             if arcade.check_for_collision(self.player_sprite, boundary):
                 boundary_collision = True
+        #Boundary Constants
         #The bounding box of the frog depends on its orientation therfore there must be wiggle room
         BOTTOM_BOUNDARY = -10
         LEFT_BOUNDARY = 0
@@ -350,11 +352,6 @@ class FroggerGame(arcade.View):
                         # Reset player position
                         self.player_sprite.center_x = SCREEN_WIDTH / 2 
                         self.player_sprite.center_y = LANE_SIZE / 2  
-
-                        
-
-                   
-                #break
        #-------------------------------------------------
 
         # check for collision with cars
@@ -386,12 +383,9 @@ class FroggerGame(arcade.View):
         lake_area_top = LANE_SIZE * 13
 
         # check if player is in the lake area and not on a log or lily pad
-        if lake_area_bottom <= self.player_sprite.center_y <= lake_area_top and not frog_on_log and not self.player_sprite.on_lily_pad:
+        if lake_area_bottom <= self.player_sprite.center_y <= lake_area_top and not frog_on_log:
             # Reset frog to starting position and decrease life count
             self.player_death()
-
-
-            self.player_sprite.on_lily_pad = False
 
         self.log_list.update()
         self.animated_log_list.update()
