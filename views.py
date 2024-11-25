@@ -1,8 +1,9 @@
-import arcade
+import csv
 
+import arcade
+from highscores import get_top_highscores
 arcade.load_font("fonts/ARCADE_N.TTF")  # Load a .ttf font file
-# TODO: replace these with actual top scoring
-top_scores = [3000, 2000, 1500]
+
 
 class MenuView(arcade.View):
     """ Class that manages the 'menu' view. """
@@ -48,11 +49,22 @@ class MenuView(arcade.View):
 
         arcade.draw_text("PRESS \"P\" TO PLAY", self.window.width / 2, self.window.height / 2 - 130,
                          arcade.color.AZURE_MIST, font_size=18, anchor_x="center", font_name="Arcade Normal")
-        arcade.draw_text(" -TOP SCORES- ", self.window.width / 2, self.window.height / 2 - 200,
-                         arcade.color.AUREOLIN, font_size=20, anchor_x="center", font_name="Arcade Normal")
-        for index, score in enumerate(top_scores):
-            arcade.draw_text(f"{index + 1}. {score}", self.window.width / 2, self.window.height / 2 - 240 - (index * 30),
-                             arcade.color.AZURE_MIST, font_size=20, anchor_x="center", font_name="Arcade Normal")
+
+        highscores = get_top_highscores()
+
+        arcade.draw_text("TOP SCORES", self.window.width / 2, self.window.height / 2 - 180,
+                         arcade.color.AZURE_MIST, font_size=18, anchor_x="center", font_name="Arcade Normal")
+
+        if not highscores:
+            arcade.draw_text("No high scores yet!", self.window.width / 2,
+                             self.window.height / 2 - 220, arcade.color.AZURE_MIST,
+                             font_size=15, anchor_x="center", font_name="Arcade Normal")
+
+        for index, score in enumerate(highscores, start=1):
+            arcade.draw_text(f"{index}. {score}",
+                             self.window.width / 2,
+                             self.window.height / 2 - (180 + (index * 40)),
+                             arcade.color.AZURE_MIST, font_size=15, anchor_x="center", font_name="Arcade Normal")
 
     def on_key_press(self, key, _modifiers):
         """ Use a key press to advance to the 'game' view. """
@@ -65,6 +77,12 @@ class MenuView(arcade.View):
         if key == arcade.key.I:
             instruction_view = InstructionView()
             self.window.show_view(instruction_view)
+
+        if key == arcade.key.ESCAPE:
+            with open('highscores.csv', 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+            arcade.close_window()
+
 
 class InstructionView(arcade.View):
     """ Class that manages the 'instruction' view. """
@@ -94,30 +112,31 @@ class InstructionView(arcade.View):
             menu_view = MenuView()
             self.window.show_view(menu_view)
 
-class GameOverView(arcade.View):
-    """ Display for when the game is over """
-    def on_show_view(self):
-        """ Called when switching to this view"""
-        arcade.set_background_color(arcade.color.DARK_GREEN)
-
-    def on_draw(self):
-        """ Draw the instruction screen """
-        from frogger_config import SCREEN_WIDTH, SCREEN_HEIGHT
-        self.clear()
-
-        arcade.draw_text("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
-                         arcade.color.WHITE, font_size=40, anchor_x="center", font_name="Arcade Normal")
-        arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
-                         arcade.color.WHITE, font_size=20, anchor_x="center", font_name="Arcade Normal")
-    def on_key_press(self, key, _modifiers):
-        # Go back to the main menu if the ESC key is pressed
-        if key == arcade.key.ESCAPE:
-            menu_view = MenuView()
-            self.window.show_view(menu_view)
-
-        # restart Frogger game if ENTER key is pressed
-        if self.game_over and key == arcade.key.ENTER:
-            from frogger import FroggerGame
-            frogger_game = FroggerGame()
-            frogger_game.setup()
-            self.window.show_view(frogger_game)
+#
+# class GameOverView(arcade.View):
+#     """ Display for when the game is over """
+#     def on_show_view(self):
+#         """ Called when switching to this view"""
+#         arcade.set_background_color(arcade.color.DARK_GREEN)
+#
+#     def on_draw(self):
+#         """ Draw the instruction screen """
+#         from frogger_config import SCREEN_WIDTH, SCREEN_HEIGHT
+#         self.clear()
+#
+#         arcade.draw_text("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
+#                          arcade.color.WHITE, font_size=40, anchor_x="center", font_name="Arcade Normal")
+#         arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
+#                          arcade.color.WHITE, font_size=20, anchor_x="center", font_name="Arcade Normal")
+#     def on_key_press(self, key, _modifiers):
+#         # Go back to the main menu if the ESC key is pressed
+#         if key == arcade.key.ESCAPE:
+#             menu_view = MenuView()
+#             self.window.show_view(menu_view)
+#
+#         # restart Frogger game if ENTER key is pressed
+#         if self.game_over and key == arcade.key.ENTER:
+#             from frogger import FroggerGame
+#             frogger_game = FroggerGame()
+#             frogger_game.setup()
+#             self.window.show_view(frogger_game)

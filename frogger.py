@@ -3,7 +3,8 @@ import arcade
 from car import Car
 from sprites import UserFrog, Logs, Logs2, Logs3, LowerTurtles, LowerTurtlesAnimated, UpperTurtles, UpperTurtlesAnimated, LilyPad
 from frogger_config import MOVEMENT_DISTANCE, LANE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
-from views import MenuView, InstructionView, GameOverView
+from views import MenuView, InstructionView
+from highscores import update_highscores
 
 # Main game class
 class FroggerGame(arcade.View):
@@ -257,9 +258,6 @@ class FroggerGame(arcade.View):
 
         # draw game over text and remove frog, otherwise draw frog as usual
         if self.game_over:
-            # view = GameOverView()
-            # self.window.show_view(view)
-
             arcade.draw_text("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
                              arcade.color.WHITE, font_size=40, anchor_x="center", font_name="Arcade Normal")
             arcade.draw_text("Press Enter to play again", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20,
@@ -282,6 +280,8 @@ class FroggerGame(arcade.View):
         self.timer = 60
         if self.lives <= 0:
             # make frog disappear when game over
+            score = self.score
+            update_highscores(score)
             self.lives = 0
             self.player_sprite.scale = 0
         else:
@@ -366,9 +366,7 @@ class FroggerGame(arcade.View):
                         self.player_sprite.center_x = SCREEN_WIDTH / 2 
                         self.player_sprite.center_y = LANE_SIZE / 2  
 
-                        
 
-                   
                 #break
        #-------------------------------------------------
             '''for lily_pad in self.lilypad_list:
