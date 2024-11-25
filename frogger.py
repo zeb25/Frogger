@@ -160,26 +160,31 @@ class FroggerGame(arcade.View):
         #end of turtle sprites----------------------------------------------
 
         #upper boundary Sprite---------------------------------------------------------------------------
+        #contants that hold the dimensions of the background features for placement of sprites
         WATER = 62
         GRASS = 83
         SMALL_GRASS = 19
         BOUNDARY_HEIGHT = int(LANE_SIZE) + 10
+        #four middle grass areas
         for i in range(4):
             self.boundary_sprite = arcade.SpriteSolidColor(width=GRASS, height=BOUNDARY_HEIGHT, color=arcade.color.ASH_GREY)
             self.boundary_sprite.left = SMALL_GRASS + WATER + i * (GRASS + WATER)
             self.boundary_sprite.bottom = LANE_SIZE * 13
             self.boundary_sprite.visible = False
             self.boundary_list.append(self.boundary_sprite)
+        #grass on left side
         self.boundary_sprite = arcade.SpriteSolidColor(width = SMALL_GRASS, height=BOUNDARY_HEIGHT, color=arcade.color.ASH_GREY)
         self.boundary_sprite.left = 0
         self.boundary_sprite.bottom = LANE_SIZE * 13
         self.boundary_sprite.visible = False
         self.boundary_list.append(self.boundary_sprite)
+        #grass on right side
         self.boundary_sprite = arcade.SpriteSolidColor(width = SMALL_GRASS, height=BOUNDARY_HEIGHT, color=arcade.color.ASH_GREY)
         self.boundary_sprite.left = SMALL_GRASS + 5 * WATER + 4 * GRASS
         self.boundary_sprite.bottom = LANE_SIZE * 13
         self.boundary_sprite.visible = False
         self.boundary_list.append(self.boundary_sprite)
+        #grass across the top
         self.boundary_sprite = arcade.SpriteSolidColor(width = SCREEN_WIDTH, height=int(LANE_SIZE), color=arcade.color.ASH_GREY)
         self.boundary_sprite.left = 0
         self.boundary_sprite.bottom = LANE_SIZE * 14
