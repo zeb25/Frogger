@@ -351,25 +351,6 @@ class FroggerGame(arcade.View):
                    
                 #break
        #-------------------------------------------------
-            '''for lily_pad in self.lilypad_list:
-                if arcade.check_for_collision(self.player_sprite, lily_pad):
-                    self.player_sprite.on_lily_pad = True
-                    self.player_sprite.center_x = lily_pad.center_x
-                    self.player_sprite.center_y = lily_pad.center_y
-                    self.player_sprite.angle = 180  #
-                    self.player_sprite.lily_pad_timer += delta_time
-                    # if the player has been on the lily pad for 0.5 seconds,
-                    # they have successfully gotten the lily pad
-                    if self.player_sprite.lily_pad_timer >= 0.5:
-                     self.lily_pads_gotten += 1
-                     #self.player_sprite.center_x, self.player_sprite.center_y = 0, 0
-                     self.player_sprite.angle = 0
-                     self.player_sprite.bottom = 0
-                     self.player_sprite.left = 5
-                     self.max_y_position = 0
-                     self.timer = 60
-                     self.score += 100
-                     self.player_sprite.lily_pad_timer = 0'''
 
         # check for collision with cars
         for car in self.car_list:
