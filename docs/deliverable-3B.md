@@ -11,9 +11,11 @@
  - **Branch**: I pushed changes to the main branch because I was having issues with git.
 
 ### David:
--
-- **Status**:
- - **Branch**: 
+- Add upper boundary
+- Add left right and bottom boundaries
+- organized some of the sprites, images, etc
+- **Status**:Completed
+ - **Branch**: Used Upper Boundary branch for upper boundary, organization branch for organization, and eventually main for finishing touches so that they would be visible to the whole team right away.
 
 ### Zoe:
 - 
