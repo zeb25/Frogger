@@ -11,10 +11,7 @@
  - **Branch**: I pushed changes to the main branch because I was having issues with git.
 
 ### David:
-- 
- - **Status**: 
-
-- 
+-
 - **Status**:
  - **Branch**: 
 
