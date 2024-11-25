@@ -44,6 +44,9 @@ class MenuView(arcade.View):
         arcade.draw_text("50 PTS FOR EVERY FROG ON A LILY PAD", self.window.width / 2, self.window.height - 350,
                          arcade.color.AUREOLIN, font_size=12, anchor_x="center", font_name="Arcade Normal")
 
+        arcade.draw_text("PRESS \"ESC\" TO EXIT THE GAME", self.window.width / 2, self.window.height / 2 - 30,
+                         arcade.color.AZURE_MIST, font_size=18, anchor_x="center", font_name="Arcade Normal")
+
         arcade.draw_text("PRESS \"I\" FOR INSTRUCTIONS", self.window.width / 2, self.window.height / 2 - 75,
                          arcade.color.AZURE_MIST, font_size=18, anchor_x="center", font_name="Arcade Normal")
 
@@ -53,12 +56,12 @@ class MenuView(arcade.View):
         highscores = get_top_highscores()
 
         arcade.draw_text("TOP SCORES", self.window.width / 2, self.window.height / 2 - 180,
-                         arcade.color.AZURE_MIST, font_size=18, anchor_x="center", font_name="Arcade Normal")
+                         arcade.color.GOLD, font_size=18, anchor_x="center", font_name="Arcade Normal")
 
         if not highscores:
             arcade.draw_text("No high scores yet!", self.window.width / 2,
-                             self.window.height / 2 - 220, arcade.color.AZURE_MIST,
-                             font_size=15, anchor_x="center", font_name="Arcade Normal")
+                             self.window.height / 2 - 220, arcade.color.GREEN,
+                             font_size=10, anchor_x="center", font_name="Arcade Normal")
 
         for index, score in enumerate(highscores, start=1):
             arcade.draw_text(f"{index}. {score}",
