@@ -209,14 +209,15 @@ class FroggerGame(arcade.View):
         #end of upper boundary sprite----------------------------------------------------------------
 
         LILY_PAD_SOURCE = "assets/lily-pad3.png"
+        LILY_PAD_Y_OFFSET = 40
   
        # x and y coordinates for the lily pads
         lily_pad_positions = [
-          (SMALL_GRASS + WATER / 2, LANE_SIZE * 14 - 40),
-          (SMALL_GRASS + WATER / 2 + (GRASS + WATER), LANE_SIZE * 14 - 40),
-          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 2, LANE_SIZE * 14 - 40),
-          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 3, LANE_SIZE * 14 - 40),
-          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 4, LANE_SIZE * 14 - 40)]
+          (SMALL_GRASS + WATER / 2, LANE_SIZE * 14 - LILY_PAD_Y_OFFSET),
+          (SMALL_GRASS + WATER / 2 + (GRASS + WATER), LANE_SIZE * 14 - LILY_PAD_Y_OFFSET),
+          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 2, LANE_SIZE * 14 - LILY_PAD_Y_OFFSET),
+          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 3, LANE_SIZE * 14 - LILY_PAD_Y_OFFSET),
+          (SMALL_GRASS + WATER / 2 + (GRASS + WATER) * 4, LANE_SIZE * 14 - LILY_PAD_Y_OFFSET)]
        # create a lilypad sprite at each specified cooridnate
         for position in lily_pad_positions: # loop through the defiened lilypad postions
           lily_pad = LilyPad(LILY_PAD_SOURCE, 2) # create new lilypad sprite
@@ -288,6 +289,8 @@ class FroggerGame(arcade.View):
             self.player_sprite.angle = 0
             self.player_sprite.center_x = SCREEN_WIDTH / 2 
             self.player_sprite.center_y = LANE_SIZE / 2 
+            #reset score counter for upward movement
+            self.max_y_position = 0
 
 
 
@@ -337,6 +340,7 @@ class FroggerGame(arcade.View):
                         # kill the frog if it tries to go on an occupied lilypad
                         self.player_death()
                     else:
+                        
                         # stick the current frog permanently on the lily pad---------
                         self.frog_sprite = arcade.Sprite("assets/froggerSprite.png", 1.0) # new frog sprite object
                         # scale the sprite
@@ -356,12 +360,15 @@ class FroggerGame(arcade.View):
                         # add score and number of lilypads reached
                         self.lily_pads_gotten += 1
                         self.score += 100
-                        self.max_y_position = 0
+                        self.max_y_position = 0 #resets score counter for upward movement
                         self.timer = 60
 
                         # Reset player position
                         self.player_sprite.center_x = SCREEN_WIDTH / 2 
                         self.player_sprite.center_y = LANE_SIZE / 2  
+
+                        
+
                    
                 #break
        #-------------------------------------------------
