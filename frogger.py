@@ -325,8 +325,8 @@ class FroggerGame(arcade.View):
                 boundary_collision = True
         #The bounding box of the frog depends on its orientation therfore there must be wiggle room
         BOTTOM_BOUNDARY = -10
-        LEFT_BOUNDARY = 0#-1
-        RIGHT_BOUNDARY = SCREEN_WIDTH + 4
+        LEFT_BOUNDARY = 0
+        RIGHT_BOUNDARY = SCREEN_WIDTH
         if self.player_sprite.bottom < BOTTOM_BOUNDARY or self.player_sprite.left < LEFT_BOUNDARY or self.player_sprite.right > RIGHT_BOUNDARY:
             boundary_collision = True
         if boundary_collision:
@@ -434,14 +434,6 @@ class FroggerGame(arcade.View):
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
-
-        #---------------------------------------------
-        # Move the frog to the starting position
-        if self.player_sprite.center_x == -100 and self.player_sprite.center_y == -100:
-           self.player_sprite.center_x = 5
-           self.player_sprite.center_y = 0
-       #--------------------------------------
-
         # restart Frogger game if ENTER key is pressed
         if self.game_over and key == arcade.key.ENTER:
             from frogger import FroggerGame
