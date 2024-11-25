@@ -355,14 +355,13 @@ class FroggerGame(arcade.View):
                         #------------------
                         # Mark the lily pad as filled
                         lily_pad.filled = True
-
-
                         # add score and number of lilypads reached
                         self.lily_pads_gotten += 1
                         self.score += 100
-                        self.max_y_position = 0 #resets score counter for upward movement
+                        #resets score counter for upward movement
+                        self.max_y_position = 0 
+                        #reset the timer
                         self.timer = 60
-
                         # Reset player position
                         self.player_sprite.center_x = SCREEN_WIDTH / 2 
                         self.player_sprite.center_y = LANE_SIZE / 2  
